@@ -1,0 +1,76 @@
+services:
+  app:
+    environment:
+      # Claude Code configuration
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+      - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-opus-4-20250514}
+
+      # Serena MCP configuration
+      - SERENA_MCP_PORT=${SERENA_MCP_PORT:-3000}
+      - SERENA_MCP_HOST=0.0.0.0
+      - MCP_SERVER_STDIO=true
+      - MCP_DEBUG_PORT=${MCP_DEBUG_PORT:-9229}
+
+      # User-specific environment variables
+      - GIT_USER_NAME=${GIT_USER_NAME:-developer}
+      - GIT_USER_EMAIL=${GIT_USER_EMAIL:-developer@example.com}
+
+      # Additional MCP configuration
+      - MCP_CONFIG_PATH=/workspace/.devcontainer/override_files/mcp-config.json
+      - CLAUDE_MCP_CONFIG=/workspace/.devcontainer/override_files/mcp-config.json
+
+      # npm global PATH and uv PATH
+      - PATH=/home/node/.local/bin:/home/node/.npm-global/bin:$$PATH
+
+    volumes:
+      # Mount user-specific configuration directories
+      - ${HOME}/.claude:/home/node/.claude:cached
+      - ${HOME}/.serena:/home/node/.serena:cached
+      - ${HOME}/.ssh:/home/node/.ssh:ro
+      - ${HOME}/.gitconfig:/home/node/.gitconfig:ro
+
+      # Mount override files
+      - ./override_files:/workspace/.devcontainer/override_files:cached
+
+      # User workspace cache
+      - ${HOME}/.cache:/home/node/.cache:cached
+
+    # Additional ports for MCP servers
+    ports:
+      - "${SERENA_MCP_PORT:-3000}:3000"
+      - "${MCP_DEBUG_PORT:-9229}:9229"
+      - "${ADDITIONAL_PORT_1:-3001}:3001"
+      - "${ADDITIONAL_PORT_2:-3002}:3002"
+
+    # Override command to start MCP servers
+    command: |
+      bash -c "
+        # Configure Git with user information
+        git config --global user.name \"\${GIT_USER_NAME}\"
+        git config --global user.email \"\${GIT_USER_EMAIL}\"
+        
+        # Install Claude Code if not already installed
+        if ! command -v claude &> /dev/null; then
+          echo 'Installing Claude Code...'
+          npm i -g @anthropic-ai/claude-code
+        fi
+        
+        # Install uv (Python package installer) for Serena MCP
+        if ! command -v uv &> /dev/null; then
+          echo 'Installing uv...'
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH="/home/node/.local/bin:\$PATH"
+        fi
+
+        # Install additional MCP servers
+        echo 'Installing MCP protocol servers...'
+        npm install -g @modelcontextprotocol/server-filesystem
+        npm install -g @modelcontextprotocol/server-git
+        
+        # Log startup complete
+        echo 'DevContainer startup complete!'
+        echo 'Claude Code and MCP servers are ready.'
+        
+        # Keep container running
+        sleep infinity
+      "

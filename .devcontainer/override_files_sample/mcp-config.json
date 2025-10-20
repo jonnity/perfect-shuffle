@@ -1,0 +1,42 @@
+{
+  "mcpServers": {
+    "serena": {
+      "command": "node",
+      "args": ["/workspace/.devcontainer/override_files/serena/dist/index.js"],
+      "env": {
+        "SERENA_MCP_PORT": "${SERENA_MCP_PORT}",
+        "NODE_ENV": "development"
+      },
+      "capabilities": {
+        "tools": true,
+        "prompts": true,
+        "resources": true
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "/workspace"
+      ],
+      "capabilities": {
+        "tools": true,
+        "resources": true
+      }
+    },
+    "git": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-git"],
+      "env": {
+        "GIT_USER_NAME": "${GIT_USER_NAME}",
+        "GIT_USER_EMAIL": "${GIT_USER_EMAIL}"
+      },
+      "capabilities": {
+        "tools": true
+      }
+    }
+  },
+  "defaultTimeout": 30000,
+  "retryAttempts": 3,
+  "retryDelay": 1000
+}
