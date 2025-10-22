@@ -46,7 +46,6 @@ services:
         mkdir -p /home/node/.npm-global
         mkdir -p /home/node/.serena/logs
         mkdir -p /home/node/.claude
-        chown -R node:node /home/node/.serena /home/node/.claude 2>/dev/null || true
 
         # Configure Git with user information
         git config --global user.name \"\${GIT_USER_NAME}\"
@@ -62,24 +61,38 @@ services:
         if ! command -v uv &> /dev/null; then
           echo 'Installing uv...'
           curl -LsSf https://astral.sh/uv/install.sh | sh
-          export PATH=\"/home/node/.local/bin:\$PATH\"
         fi
+
+        # Ensure PATH includes all necessary directories
+        export PATH=\"/home/node/.local/bin:/home/node/.npm-global/bin:\$PATH\"
 
         # Install and configure MCP servers
         echo 'Installing MCP protocol servers...'
         npm install -g @modelcontextprotocol/server-filesystem
 
-        # Configure MCP servers for Claude Code
+        # Wait for installations to complete and verify
+        echo 'Verifying installations...'
+        which claude || echo 'WARNING: claude not found in PATH'
+        which uv || echo 'WARNING: uv not found in PATH'
+
+        # Configure MCP servers for Claude Code (as node user in /workspace)
         echo 'Configuring MCP servers...'
 
-        # Add filesystem MCP server (if not already added)
-        if ! claude mcp list 2>/dev/null | grep -q 'filesystem'; then
-          claude mcp add --transport stdio filesystem -- npx @modelcontextprotocol/server-filesystem /workspace
+        # Add filesystem MCP server
+        echo 'Adding filesystem MCP server...'
+        cd /workspace
+        if /home/node/.npm-global/bin/claude mcp add --transport stdio filesystem -- npx @modelcontextprotocol/server-filesystem /workspace 2>&1 | tee /tmp/mcp-filesystem.log; then
+          echo 'Filesystem MCP server added successfully'
+        else
+          echo 'Failed to add filesystem MCP server. Check /tmp/mcp-filesystem.log'
         fi
 
-        # Add Serena MCP server (if not already added)
-        if ! claude mcp list 2>/dev/null | grep -q 'serena'; then
-          claude mcp add --transport stdio serena -- uvx --from git+https://github.com/oraios/serena serena start-mcp-server --context ide-assistant --project /workspace
+        # Add Serena MCP server
+        echo 'Adding Serena MCP server...'
+        if /home/node/.npm-global/bin/claude mcp add --transport stdio serena -- uvx --from git+https://github.com/oraios/serena serena start-mcp-server --context ide-assistant --project /workspace 2>&1 | tee /tmp/mcp-serena.log; then
+          echo 'Serena MCP server added successfully'
+        else
+          echo 'Failed to add Serena MCP server. Check /tmp/mcp-serena.log'
         fi
 
         # Log startup complete
