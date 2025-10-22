@@ -62,14 +62,27 @@ services:
           export PATH=\"/home/node/.local/bin:\$PATH\"
         fi
 
-        # Install additional MCP servers (optional - uncomment if needed)
-        # echo 'Installing MCP protocol servers...'
-        # npm install -g @modelcontextprotocol/server-filesystem
-        # npm install -g @modelcontextprotocol/server-git
+        # Install and configure MCP servers
+        echo 'Installing MCP protocol servers...'
+        npm install -g @modelcontextprotocol/server-filesystem
+        npm install -g @modelcontextprotocol/server-git
+
+        # Configure MCP servers for Claude Code
+        echo 'Configuring MCP servers...'
+
+        # Add filesystem MCP server (if not already added)
+        if ! claude mcp list 2>/dev/null | grep -q 'filesystem'; then
+          claude mcp add --transport stdio filesystem -- npx @modelcontextprotocol/server-filesystem /workspace
+        fi
+
+        # Add git MCP server (if not already added)
+        if ! claude mcp list 2>/dev/null | grep -q 'git'; then
+          claude mcp add --transport stdio git -- npx @modelcontextprotocol/server-git
+        fi
 
         # Log startup complete
         echo 'DevContainer startup complete!'
-        echo 'Claude Code and development tools are ready.'
+        echo 'Claude Code and MCP servers are ready.'
 
         # Keep container running
         sleep infinity
