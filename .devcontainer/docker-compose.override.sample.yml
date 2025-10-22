@@ -20,7 +20,7 @@ services:
       - CLAUDE_MCP_CONFIG=/workspace/.devcontainer/override_files/mcp-config.json
 
       # npm global PATH and uv PATH
-      - PATH=/home/node/.local/bin:/home/node/.npm-global/bin:$$PATH
+      - PATH=/home/node/.local/bin:/home/node/.npm-global/bin:$PATH
 
     volumes:
       # Mount user-specific configuration directories
@@ -36,41 +36,5 @@ services:
       - ${HOME}/.cache:/home/node/.cache:cached
 
     # Additional ports for MCP servers
-    ports:
-      - "${SERENA_MCP_PORT:-3000}:3000"
-      - "${MCP_DEBUG_PORT:-9229}:9229"
-      - "${ADDITIONAL_PORT_1:-3001}:3001"
-      - "${ADDITIONAL_PORT_2:-3002}:3002"
-
-    # Override command to start MCP servers
-    command: |
-      bash -c "
-        # Configure Git with user information
-        git config --global user.name \"\${GIT_USER_NAME}\"
-        git config --global user.email \"\${GIT_USER_EMAIL}\"
-        
-        # Install Claude Code if not already installed
-        if ! command -v claude &> /dev/null; then
-          echo 'Installing Claude Code...'
-          npm i -g @anthropic-ai/claude-code
-        fi
-        
-        # Install uv (Python package installer) for Serena MCP
-        if ! command -v uv &> /dev/null; then
-          echo 'Installing uv...'
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          export PATH="/home/node/.local/bin:\$PATH"
-        fi
-
-        # Install additional MCP servers
-        echo 'Installing MCP protocol servers...'
-        npm install -g @modelcontextprotocol/server-filesystem
-        npm install -g @modelcontextprotocol/server-git
-        
-        # Log startup complete
-        echo 'DevContainer startup complete!'
-        echo 'Claude Code and MCP servers are ready.'
-        
-        # Keep container running
-        sleep infinity
-      "
+    # Note: ports are ignored when using network_mode: host
+    # The services will be accessible on localhost at their respective ports
