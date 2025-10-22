@@ -42,8 +42,11 @@ services:
     # Override command to install tools and configure environment
     command: |
       bash -c "
-        # Ensure npm global directory exists
+        # Ensure required directories exist with correct permissions
         mkdir -p /home/node/.npm-global
+        mkdir -p /home/node/.serena/logs
+        mkdir -p /home/node/.claude
+        chown -R node:node /home/node/.serena /home/node/.claude 2>/dev/null || true
 
         # Configure Git with user information
         git config --global user.name \"\${GIT_USER_NAME}\"
@@ -72,6 +75,11 @@ services:
         # Add filesystem MCP server (if not already added)
         if ! claude mcp list 2>/dev/null | grep -q 'filesystem'; then
           claude mcp add --transport stdio filesystem -- npx @modelcontextprotocol/server-filesystem /workspace
+        fi
+
+        # Add Serena MCP server (if not already added)
+        if ! claude mcp list 2>/dev/null | grep -q 'serena'; then
+          claude mcp add --transport stdio serena -- uvx --from git+https://github.com/oraios/serena serena start-mcp-server --context ide-assistant --project /workspace
         fi
 
         # Log startup complete
