@@ -38,3 +38,39 @@ services:
     # Additional ports for MCP servers
     # Note: ports are ignored when using network_mode: host
     # The services will be accessible on localhost at their respective ports
+
+    # Override command to install tools and configure environment
+    command: |
+      bash -c "
+        # Ensure npm global directory exists
+        mkdir -p /home/node/.npm-global
+
+        # Configure Git with user information
+        git config --global user.name \"\${GIT_USER_NAME}\"
+        git config --global user.email \"\${GIT_USER_EMAIL}\"
+
+        # Install Claude Code if not already installed
+        if ! command -v claude &> /dev/null; then
+          echo 'Installing Claude Code...'
+          npm install -g @anthropic-ai/claude-code
+        fi
+
+        # Install uv (Python package installer) for Serena MCP
+        if ! command -v uv &> /dev/null; then
+          echo 'Installing uv...'
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH=\"/home/node/.local/bin:\$PATH\"
+        fi
+
+        # Install additional MCP servers (optional - uncomment if needed)
+        # echo 'Installing MCP protocol servers...'
+        # npm install -g @modelcontextprotocol/server-filesystem
+        # npm install -g @modelcontextprotocol/server-git
+
+        # Log startup complete
+        echo 'DevContainer startup complete!'
+        echo 'Claude Code and development tools are ready.'
+
+        # Keep container running
+        sleep infinity
+      "
