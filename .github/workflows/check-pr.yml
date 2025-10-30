@@ -1,0 +1,83 @@
+name: Check PR to Main
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  check-version-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if source is version branch
+        id: check_branch
+        run: |
+          SOURCE_BRANCH="${{ github.head_ref }}"
+          echo "Source branch: $SOURCE_BRANCH"
+
+          # Check if branch matches version pattern (v*.*.*)
+          if echo "$SOURCE_BRANCH" | grep -qE "^v[0-9]+\.[0-9]+\.[0-9]+$"; then
+            echo "is_version_branch=true" >> $GITHUB_OUTPUT
+            echo "✅ This is a version branch: $SOURCE_BRANCH"
+          else
+            echo "is_version_branch=false" >> $GITHUB_OUTPUT
+            echo "❌ This is NOT a version branch: $SOURCE_BRANCH"
+          fi
+
+      - name: Close non-version PR
+        if: steps.check_branch.outputs.is_version_branch == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const sourceBranch = context.payload.pull_request.head.ref;
+
+            // Add comment explaining why PR is being closed
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `🚫 This PR is being automatically closed because it's not from a version branch.
+
+              **Policy**: Only version branches (matching pattern \`v*.*.*\`) can be merged into \`main\`.
+
+              **Current source branch**: \`${sourceBranch}\`
+
+              **To fix this**:
+              - Merge your changes into the \`dev\` branch instead
+              - Or create a version branch (e.g., \`v1.0.0\`) if you're ready for a release
+
+              For more information, see the project's branching strategy.`
+            });
+
+            // Close the PR
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              state: 'closed'
+            });
+
+            console.log(`Closed PR #${prNumber} from non-version branch: ${sourceBranch}`);
+
+      - name: Comment on version PR
+        if: steps.check_branch.outputs.is_version_branch == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const sourceBranch = context.payload.pull_request.head.ref;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `✅ This PR is from a version branch (\`${sourceBranch}\`).
+
+              **Upon merge to main**:
+              - The project will be deployed to Cloudflare Pages
+              - A GitHub release will be created with tag \`${sourceBranch}\`
+
+              Please ensure all tests pass and the code is ready for production deployment.`
+            });
