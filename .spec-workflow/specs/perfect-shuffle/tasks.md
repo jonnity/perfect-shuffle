@@ -2,7 +2,7 @@
 
 ## プロジェクトセットアップとインフラ
 
-- [ ] 1. Vite + React + TypeScript + Tailwind CSS + Biome でプロジェクトを初期化
+- [x] 1. Vite + React + TypeScript + Tailwind CSS + Biome でプロジェクトを初期化
   - ファイル: package.json, vite.config.ts, tsconfig.json, tailwind.config.js, biome.json, index.html, src/main.tsx
   - React と TypeScript テンプレートで Vite プロジェクトを初期化
   - Tailwind CSS をインストール・設定
