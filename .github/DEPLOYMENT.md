@@ -23,13 +23,29 @@
 - `npm run build`でプロジェクトをビルド
 - `dist`フォルダをCloudflare Pagesにデプロイ
 - バージョンタグでGitHubリリースを作成
+- **Slack通知**: デプロイの成功/失敗を通知
 
 **必要なシークレット**:
 - `CLOUDFLARE_API_TOKEN`: Pages書き込み権限を持つCloudflare APIトークン
 - `CLOUDFLARE_ACCOUNT_ID`: CloudflareアカウントID
+- `SLACK_WEBHOOK_URL`: Slack通知用のWebhook URL
 - `GITHUB_TOKEN`: GitHub Actionsにより自動提供
 
-### 2. mainへのPRチェック (`check-pr.yml`)
+### 2. テスト (`test.yml`)
+
+**トリガー**: `main`以外のブランチへのプッシュ、または`dev`へのプルリクエスト
+
+**動作**:
+- 依存関係のインストール
+- リンター（`npm run lint`）の実行
+- テスト（`npm run test`）の実行
+- ビルド（`npm run build`）の実行
+- **Slack通知**: テストの成功/失敗を通知
+
+**必要なシークレット**:
+- `SLACK_WEBHOOK_URL`: Slack通知用のWebhook URL
+
+### 3. mainへのPRチェック (`check-pr.yml`)
 
 **トリガー**: `main`ブランチへのプルリクエストの作成・更新
 
@@ -56,14 +72,24 @@
 2. **アカウントID**: Cloudflareダッシュボードを表示したときのURLで確認できます
    - フォーマット: `https://dash.cloudflare.com/<ACCOUNT_ID>`
 
-### 3. GitHubシークレットの設定
+### 3. Slack Webhook URLの取得
+
+1. [Slack API](https://api.slack.com/apps)にアクセス
+2. **Create New App** > **From scratch**を選択
+3. アプリ名とワークスペースを指定して作成
+4. **Incoming Webhooks**を有効化
+5. **Add New Webhook to Workspace**をクリックして通知先チャンネルを選択
+6. 生成されたWebhook URLをコピー
+
+### 4. GitHubシークレットの設定
 
 リポジトリの **Settings** > **Secrets and variables** > **Actions**に移動し、以下を追加：
 
 - `CLOUDFLARE_API_TOKEN`: Cloudflare APIトークン
 - `CLOUDFLARE_ACCOUNT_ID`: CloudflareアカウントID
+- `SLACK_WEBHOOK_URL`: Slack通知用のWebhook URL
 
-### 4. ブランチ保護の設定
+### 5. ブランチ保護の設定
 
 **Settings** > **Branches**に移動し、ブランチ保護ルールを追加：
 
@@ -106,8 +132,25 @@
      - Cloudflare Pagesにデプロイ
      - タグ`v1.0.0`でGitHubリリースを作成
 
+## 通知
+
+すべてのワークフローで以下のイベント時にSlackへ通知が送信されます：
+
+- ✅ **テスト成功**: main以外のブランチでのテストが成功した場合
+- ❌ **テスト失敗**: main以外のブランチでのテストが失敗した場合
+- 🚀 **デプロイ成功**: mainブランチへのバージョンブランチマージ後のデプロイが成功した場合
+- 💥 **デプロイ失敗**: mainブランチへのバージョンブランチマージ後のデプロイが失敗した場合
+
+通知には以下の情報が含まれます：
+- リポジトリ名
+- ブランチ名/バージョン
+- コミット情報
+- 実行者
+- 関連リンク（コミット、ワークフローログ、リリースページ等）
+
 ## 注意事項
 
 - バージョンブランチでないPRが`main`に作成された場合、自動的にクローズされます
 - バージョンブランチからのマージのみがデプロイをトリガーします
 - バージョンブランチ名はセマンティックバージョニングに従う必要があります（例：`v1.0.0`、`v2.1.3`）
+- Slack通知を有効にするには、`SLACK_WEBHOOK_URL`シークレットの設定が必要です

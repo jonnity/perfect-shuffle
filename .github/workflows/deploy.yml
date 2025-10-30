@@ -68,3 +68,43 @@ jobs:
             Deployed version ${{ steps.check_version.outputs.version }} to Cloudflare Pages.
           draft: false
           prerelease: false
+
+      - name: Notify Slack on deployment success
+        if: steps.check_version.outputs.is_version_merge == 'true' && success()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "🚀 デプロイが成功しました",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Pages)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on deployment failure
+        if: steps.check_version.outputs.is_version_merge == 'true' && failure()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "💥 デプロイが失敗しました",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*💥 デプロイが失敗しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Pages)\n*作成者:* ${{ github.actor }}\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
