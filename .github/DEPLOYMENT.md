@@ -1,113 +1,113 @@
-# Deployment and CI/CD Setup
+# デプロイとCI/CDセットアップ
 
-This document describes the GitHub Actions workflows and branching strategy for deploying Perfect Shuffle to Cloudflare Pages.
+このドキュメントは、Perfect ShuffleをCloudflare Pagesにデプロイするための、GitHub Actionsワークフローとブランチ戦略について説明します。
 
-## Branching Strategy
+## ブランチ戦略
 
-The project uses the following branches:
+プロジェクトでは以下のブランチを使用します：
 
-- **`main`**: Protected production branch. Only version branches can be merged here.
-- **`dev`**: Protected development branch. Feature branches are merged here for testing.
-- **`v*.*.*`**: Version branches (e.g., `v1.0.0`, `v1.2.3`). Used for releases.
-- **Feature branches**: Created for individual tasks, merged to `dev`.
+- **`main`**: 保護された本番ブランチ。バージョンブランチのみがマージ可能です。
+- **`dev`**: 保護された開発ブランチ。機能ブランチはここにマージしてテストします。
+- **`v*.*.*`**: バージョンブランチ（例：`v1.0.0`、`v1.2.3`）。リリースに使用します。
+- **機能ブランチ**: 個別のタスクごとに作成し、`dev`にマージします。
 
-## Workflows
+## ワークフロー
 
-### 1. Deploy to Cloudflare (`deploy.yml`)
+### 1. Cloudflareへのデプロイ (`deploy.yml`)
 
-**Trigger**: Push to `main` branch
+**トリガー**: `main`ブランチへのプッシュ
 
-**Behavior**:
-- Checks if the push is from a version branch merge
-- Only deploys if the merge came from a version branch (matching pattern `v*.*.*`)
-- Builds the project with `npm run build`
-- Deploys the `dist` folder to Cloudflare Pages
-- Creates a GitHub release with the version tag
+**動作**:
+- プッシュがバージョンブランチからのマージかどうかをチェック
+- バージョンブランチ（`v*.*.*`パターンに一致）からのマージの場合のみデプロイ
+- `npm run build`でプロジェクトをビルド
+- `dist`フォルダをCloudflare Pagesにデプロイ
+- バージョンタグでGitHubリリースを作成
 
-**Required Secrets**:
-- `CLOUDFLARE_API_TOKEN`: Cloudflare API token with Pages write permissions
-- `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID
-- `GITHUB_TOKEN`: Automatically provided by GitHub Actions
+**必要なシークレット**:
+- `CLOUDFLARE_API_TOKEN`: Pages書き込み権限を持つCloudflare APIトークン
+- `CLOUDFLARE_ACCOUNT_ID`: CloudflareアカウントID
+- `GITHUB_TOKEN`: GitHub Actionsにより自動提供
 
-### 2. Check PR to Main (`check-pr.yml`)
+### 2. mainへのPRチェック (`check-pr.yml`)
 
-**Trigger**: Pull request opened/updated to `main` branch
+**トリガー**: `main`ブランチへのプルリクエストの作成・更新
 
-**Behavior**:
-- Checks if the source branch is a version branch (matches `v*.*.*` pattern)
-- **If NOT a version branch**: Automatically closes the PR with a comment explaining the policy
-- **If IS a version branch**: Adds a comment confirming the PR will trigger deployment
+**動作**:
+- ソースブランチがバージョンブランチ（`v*.*.*`パターン）かどうかをチェック
+- **バージョンブランチでない場合**: ポリシーを説明するコメントと共にPRを自動クローズ
+- **バージョンブランチの場合**: PRがデプロイをトリガーすることを確認するコメントを追加
 
-## Setup Instructions
+## セットアップ手順
 
-### 1. Create Cloudflare Pages Project
+### 1. Cloudflare Pagesプロジェクトの作成
 
-1. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. Go to **Workers & Pages** > **Create application** > **Pages**
-3. Create a project named `perfect-shuffle`
-4. Note: Don't connect the Git repository - we'll deploy via GitHub Actions
+1. [Cloudflareダッシュボード](https://dash.cloudflare.com/)にログイン
+2. **Workers & Pages** > **Create application** > **Pages**に移動
+3. `perfect-shuffle`という名前でプロジェクトを作成
+4. 注意: Gitリポジトリは接続しないでください - GitHub Actions経由でデプロイします
 
-### 2. Get Cloudflare Credentials
+### 2. Cloudflare認証情報の取得
 
-1. **API Token**: Go to **My Profile** > **API Tokens** > **Create Token**
-   - Use the "Edit Cloudflare Workers" template
-   - Or create a custom token with "Cloudflare Pages:Edit" permission
+1. **APIトークン**: **My Profile** > **API Tokens** > **Create Token**に移動
+   - "Edit Cloudflare Workers"テンプレートを使用
+   - または"Cloudflare Pages:Edit"権限でカスタムトークンを作成
 
-2. **Account ID**: Found in the URL when viewing your Cloudflare dashboard
-   - Format: `https://dash.cloudflare.com/<ACCOUNT_ID>`
+2. **アカウントID**: Cloudflareダッシュボードを表示したときのURLで確認できます
+   - フォーマット: `https://dash.cloudflare.com/<ACCOUNT_ID>`
 
-### 3. Configure GitHub Secrets
+### 3. GitHubシークレットの設定
 
-Go to your repository **Settings** > **Secrets and variables** > **Actions** and add:
+リポジトリの **Settings** > **Secrets and variables** > **Actions**に移動し、以下を追加：
 
-- `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token
-- `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID
+- `CLOUDFLARE_API_TOKEN`: Cloudflare APIトークン
+- `CLOUDFLARE_ACCOUNT_ID`: CloudflareアカウントID
 
-### 4. Protect Branches
+### 4. ブランチ保護の設定
 
-Go to **Settings** > **Branches** and add branch protection rules:
+**Settings** > **Branches**に移動し、ブランチ保護ルールを追加：
 
-**For `main`**:
-- Require pull request before merging
-- Require status checks to pass
-- Do not allow bypassing the above settings
+**`main`の場合**:
+- マージ前にプルリクエストを要求
+- ステータスチェックの合格を要求
+- 上記設定のバイパスを許可しない
 
-**For `dev`**:
-- Require pull request before merging
-- Require status checks to pass
+**`dev`の場合**:
+- マージ前にプルリクエストを要求
+- ステータスチェックの合格を要求
 
-## Release Workflow
+## リリースワークフロー
 
-1. **Feature Development**:
+1. **機能開発**:
    ```bash
    git checkout dev
    git checkout -b feature/my-feature
-   # Make changes
+   # 変更を加える
    git push origin feature/my-feature
-   # Create PR to dev
+   # devへのPRを作成
    ```
 
-2. **Testing on Dev**:
-   - Merge feature branches to `dev`
-   - Test thoroughly
+2. **Devでのテスト**:
+   - 機能ブランチを`dev`にマージ
+   - 徹底的にテスト
 
-3. **Create Release**:
+3. **リリース作成**:
    ```bash
    git checkout dev
    git checkout -b v1.0.0
-   # Update version in package.json if needed
+   # 必要に応じてpackage.jsonのバージョンを更新
    git push origin v1.0.0
-   # Create PR to main
+   # mainへのPRを作成
    ```
 
-4. **Deploy**:
-   - Merge the version branch PR to `main`
-   - GitHub Actions automatically:
-     - Deploys to Cloudflare Pages
-     - Creates a GitHub release with tag `v1.0.0`
+4. **デプロイ**:
+   - バージョンブランチのPRを`main`にマージ
+   - GitHub Actionsが自動的に：
+     - Cloudflare Pagesにデプロイ
+     - タグ`v1.0.0`でGitHubリリースを作成
 
-## Notes
+## 注意事項
 
-- Non-version branch PRs to `main` will be automatically closed
-- Only merges from version branches trigger deployments
-- The version branch name should follow semantic versioning (e.g., `v1.0.0`, `v2.1.3`)
+- バージョンブランチでないPRが`main`に作成された場合、自動的にクローズされます
+- バージョンブランチからのマージのみがデプロイをトリガーします
+- バージョンブランチ名はセマンティックバージョニングに従う必要があります（例：`v1.0.0`、`v2.1.3`）
