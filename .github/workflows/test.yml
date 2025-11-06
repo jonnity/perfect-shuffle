@@ -33,6 +33,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Get commit message
+        id: commit
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
+
       - name: Notify Slack on success
         if: success()
         uses: slackapi/slack-github-action@v1.27.0
@@ -45,7 +51,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*✅ テストが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*ブランチ:* `${{ github.ref_name }}`\n*コミット:* ${{ github.event.head_commit.message }}\n*作成者:* ${{ github.actor }}\n\n<${{ github.event.head_commit.url }}|コミットを見る>"
+                    "text": "*✅ テストが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*ブランチ:* `${{ github.ref_name }}`\n*コミット:* ${{ steps.commit.outputs.message }}\n*作成者:* ${{ github.actor }}\n\n<${{ github.event.head_commit.url }}|コミットを見る>"
                   }
                 }
               ]
@@ -65,7 +71,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*❌ テストが失敗しました*\n\n*リポジトリ:* ${{ github.repository }}\n*ブランチ:* `${{ github.ref_name }}`\n*コミット:* ${{ github.event.head_commit.message }}\n*作成者:* ${{ github.actor }}\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
+                    "text": "*❌ テストが失敗しました*\n\n*リポジトリ:* ${{ github.repository }}\n*ブランチ:* `${{ github.ref_name }}`\n*コミット:* ${{ steps.commit.outputs.message }}\n*作成者:* ${{ github.actor }}\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
                   }
                 }
               ]
