@@ -48,13 +48,13 @@ jobs:
         if: steps.check_version.outputs.is_version_merge == 'true'
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Workers
         if: steps.check_version.outputs.is_version_merge == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=perfect-shuffle
+          command: deploy
 
       - name: Create GitHub Release
         if: steps.check_version.outputs.is_version_merge == 'true'
@@ -65,7 +65,7 @@ jobs:
           tag_name: ${{ steps.check_version.outputs.version }}
           release_name: Release ${{ steps.check_version.outputs.version }}
           body: |
-            Deployed version ${{ steps.check_version.outputs.version }} to Cloudflare Pages.
+            Deployed version ${{ steps.check_version.outputs.version }} to Cloudflare Workers.
           draft: false
           prerelease: false
 
@@ -81,7 +81,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Pages)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>"
+                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Workers)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>"
                   }
                 }
               ]
@@ -101,7 +101,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*💥 デプロイが失敗しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Pages)\n*作成者:* ${{ github.actor }}\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
+                    "text": "*💥 デプロイが失敗しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Workers)\n*作成者:* ${{ github.actor }}\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
                   }
                 }
               ]
