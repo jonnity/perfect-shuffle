@@ -1,0 +1,110 @@
+name: Deploy to Cloudflare
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if merge is from version branch
+        id: check_version
+        run: |
+          # Get the commit message of the merge
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+
+          # Check if this is a merge commit from a version branch (v*.*.*)
+          if echo "$COMMIT_MSG" | grep -qE "Merge.*v[0-9]+\.[0-9]+\.[0-9]+"; then
+            echo "is_version_merge=true" >> $GITHUB_OUTPUT
+            # Extract version from commit message
+            VERSION=$(echo "$COMMIT_MSG" | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+" | head -1)
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "This is a version branch merge: $VERSION"
+          else
+            echo "is_version_merge=false" >> $GITHUB_OUTPUT
+            echo "Not a version branch merge, skipping deployment"
+          fi
+
+      - name: Setup Node.js
+        if: steps.check_version.outputs.is_version_merge == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.check_version.outputs.is_version_merge == 'true'
+        run: npm ci
+
+      - name: Build
+        if: steps.check_version.outputs.is_version_merge == 'true'
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        if: steps.check_version.outputs.is_version_merge == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=perfect-shuffle
+
+      - name: Create GitHub Release
+        if: steps.check_version.outputs.is_version_merge == 'true'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.check_version.outputs.version }}
+          release_name: Release ${{ steps.check_version.outputs.version }}
+          body: |
+            Deployed version ${{ steps.check_version.outputs.version }} to Cloudflare Pages.
+          draft: false
+          prerelease: false
+
+      - name: Notify Slack on deployment success
+        if: steps.check_version.outputs.is_version_merge == 'true' && success()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "🚀 デプロイが成功しました",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Pages)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on deployment failure
+        if: steps.check_version.outputs.is_version_merge == 'true' && failure()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "💥 デプロイが失敗しました",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*💥 デプロイが失敗しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Pages)\n*作成者:* ${{ github.actor }}\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
