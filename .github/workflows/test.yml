@@ -39,26 +39,6 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%s)
           echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
 
-      - name: Notify Slack on success
-        if: success()
-        uses: slackapi/slack-github-action@v1.27.0
-        with:
-          payload: |
-            {
-              "text": "✅ テストが成功しました",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*✅ テストが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*ブランチ:* `${{ github.ref_name }}`\n*コミット:* ${{ steps.commit.outputs.message }}\n*作成者:* ${{ github.actor }}\n\n<${{ github.event.head_commit.url }}|コミットを見る>"
-                  }
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
       - name: Notify Slack on failure
         if: failure()
         uses: slackapi/slack-github-action@v1.27.0
