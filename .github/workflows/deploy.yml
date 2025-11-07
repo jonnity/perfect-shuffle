@@ -84,7 +84,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Workers)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>"
+                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Workers)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
                   }
                 }
               ]
