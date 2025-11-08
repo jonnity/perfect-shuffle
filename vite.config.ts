@@ -11,4 +11,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // @ts-expect-error - Vite config types don't include test config, but it works at runtime
+  test: {
+    environment: "jsdom",
+    globals: true,
+  },
 })
