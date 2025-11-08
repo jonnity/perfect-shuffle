@@ -1,6 +1,6 @@
+import { DEFAULT_CARD_COUNT, MAX_CARD_COUNT, MIN_CARD_COUNT } from "@/types"
 import { describe, expect, it } from "vitest"
 import { CardCount } from "./validateCardCount"
-import { DEFAULT_CARD_COUNT, MAX_CARD_COUNT, MIN_CARD_COUNT } from "@/types"
 
 describe("CardCount", () => {
   describe("値オブジェクトの生成", () => {
@@ -57,7 +57,7 @@ describe("CardCount", () => {
 
   describe("無効な値（非数値）", () => {
     it("NaNはデフォルト値60を使用する", () => {
-      const cardCount = CardCount.create(NaN)
+      const cardCount = CardCount.create(Number.NaN)
       expect(cardCount.value).toBe(DEFAULT_CARD_COUNT)
     })
 
@@ -67,10 +67,10 @@ describe("CardCount", () => {
     })
 
     it("Infinityはデフォルト値60を使用する", () => {
-      const cardCount1 = CardCount.create(Infinity)
+      const cardCount1 = CardCount.create(Number.POSITIVE_INFINITY)
       expect(cardCount1.value).toBe(DEFAULT_CARD_COUNT)
 
-      const cardCount2 = CardCount.create(-Infinity)
+      const cardCount2 = CardCount.create(Number.NEGATIVE_INFINITY)
       expect(cardCount2.value).toBe(DEFAULT_CARD_COUNT)
     })
   })
@@ -124,8 +124,22 @@ describe("CardCount", () => {
   describe("データ整合性", () => {
     it("生成された値オブジェクトの値は常に1-99の範囲内", () => {
       const testCases = [
-        -100, -1, 0, 0.5, 1, 30, 50, 60, 99, 99.9, 100, 200,
-        NaN, undefined, Infinity, -Infinity,
+        -100,
+        -1,
+        0,
+        0.5,
+        1,
+        30,
+        50,
+        60,
+        99,
+        99.9,
+        100,
+        200,
+        Number.NaN,
+        undefined,
+        Number.POSITIVE_INFINITY,
+        Number.NEGATIVE_INFINITY,
       ]
 
       for (const testCase of testCases) {

@@ -1,8 +1,4 @@
-import {
-  DEFAULT_CARD_COUNT,
-  MAX_CARD_COUNT,
-  MIN_CARD_COUNT,
-} from "@/types";
+import { DEFAULT_CARD_COUNT, MAX_CARD_COUNT, MIN_CARD_COUNT } from "@/types"
 
 /**
  * カード枚数を表す値オブジェクト
@@ -39,7 +35,7 @@ import {
  * // cardCount.value = 100; // Error: Cannot assign to 'value' because it is a read-only property
  */
 export class CardCount {
-  private readonly _value: number;
+  private readonly _value: number
 
   /**
    * プライベートコンストラクタ
@@ -48,7 +44,7 @@ export class CardCount {
    * @param value - バリデート済みのカード枚数
    */
   private constructor(value: number) {
-    this._value = value;
+    this._value = value
   }
 
   /**
@@ -58,8 +54,8 @@ export class CardCount {
    * @returns CardCount 値オブジェクト
    */
   static create(count: number | undefined): CardCount {
-    const validatedCount = this.validate(count);
-    return new CardCount(validatedCount);
+    const validatedCount = CardCount.validate(count)
+    return new CardCount(validatedCount)
   }
 
   /**
@@ -71,22 +67,22 @@ export class CardCount {
   private static validate(count: number | undefined): number {
     // 数値チェック: NaN、undefined、または有効な数値でない場合
     if (typeof count !== "number" || Number.isNaN(count)) {
-      return DEFAULT_CARD_COUNT;
+      return DEFAULT_CARD_COUNT
     }
 
     // 範囲チェック: MIN_CARD_COUNT - MAX_CARD_COUNT の範囲外の場合
     if (count < MIN_CARD_COUNT || count > MAX_CARD_COUNT) {
-      return DEFAULT_CARD_COUNT;
+      return DEFAULT_CARD_COUNT
     }
 
     // 有効な値の場合、そのまま返す
-    return count;
+    return count
   }
 
   /**
    * カード枚数の値を取得
    */
   get value(): number {
-    return this._value;
+    return this._value
   }
 }
