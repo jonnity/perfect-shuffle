@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { CardCount } from "./validateCardCount"
-import { DEFAULT_CARD_COUNT, MAX_CARD_COUNT, MIN_CARD_COUNT } from "../../types"
+import { DEFAULT_CARD_COUNT, MAX_CARD_COUNT, MIN_CARD_COUNT } from "@/types"
 
 describe("CardCount", () => {
   describe("値オブジェクトの生成", () => {

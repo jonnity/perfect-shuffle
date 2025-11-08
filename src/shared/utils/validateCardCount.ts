@@ -2,7 +2,7 @@ import {
   DEFAULT_CARD_COUNT,
   MAX_CARD_COUNT,
   MIN_CARD_COUNT,
-} from "../../types";
+} from "@/types";
 
 /**
  * カード枚数を表す値オブジェクト
