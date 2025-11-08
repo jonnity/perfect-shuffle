@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 /**
  * LocalStorage の読み書きのための汎用カスタムフック
