@@ -38,11 +38,18 @@ import { useState } from "react"
  * saveCardCount();
  */
 export function useCardCount() {
-  // LocalStorage から初期値を読み込み（読み込みのみ）
-  const [persistedCount] = useLocalStorage<number>("cardCount", DEFAULT_CARD_COUNT)
+  // LocalStorage から初期値を読み込み
+  const [persistedCount, setPersistedCount] = useLocalStorage<number>(
+    "cardCount",
+    DEFAULT_CARD_COUNT,
+  )
 
   // メモリ上の状態（increment/decrement で即座に更新）
-  const [cardCount, setCardCount] = useState<number>(persistedCount)
+  // バリデーションを通して初期化
+  const [cardCount, setCardCount] = useState<number>(() => {
+    const validated = CardCount.create(persistedCount)
+    return validated.value
+  })
 
   /**
    * カード枚数を1増やす（上限: 99）
@@ -83,7 +90,7 @@ export function useCardCount() {
   const saveCardCount = () => {
     const validatedCount = CardCount.create(cardCount)
     // LocalStorage に保存
-    window.localStorage.setItem("cardCount", JSON.stringify(validatedCount.value))
+    setPersistedCount(validatedCount.value)
   }
 
   return {
