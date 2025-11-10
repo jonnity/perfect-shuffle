@@ -1,9 +1,10 @@
 import { CardCountSelector } from "@/features/card-setup/components/CardCountSelector"
+import { QuickSelectButtons } from "@/features/card-setup/components/QuickSelectButtons"
 import { useCardCount } from "@/features/card-setup/hooks/useCardCount"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 function DemoPage() {
-  const { cardCount, increment, decrement } = useCardCount()
+  const { cardCount, increment, decrement, setQuickSelect } = useCardCount()
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -13,6 +14,14 @@ function DemoPage() {
         </h1>
         <CardCountSelector cardCount={cardCount} onIncrement={increment} onDecrement={decrement} />
         <p className="mt-4 text-center text-sm text-gray-600">現在のカード枚数: {cardCount}</p>
+
+        <div className="mt-8 border-t border-gray-200 pt-8">
+          <h2 className="mb-4 text-center text-xl font-bold text-gray-900">
+            QuickSelectButtons デモ
+          </h2>
+          <QuickSelectButtons onSelect={setQuickSelect} />
+          <p className="mt-4 text-center text-sm text-gray-600">クイック選択で枚数を設定できます</p>
+        </div>
       </div>
     </div>
   )
