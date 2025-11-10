@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { CardCountSelector } from "@/features/card-setup/components/CardCountSelector"
 import { useCardCount } from "@/features/card-setup/hooks/useCardCount"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 function DemoPage() {
   const { cardCount, increment, decrement } = useCardCount()
@@ -11,14 +11,8 @@ function DemoPage() {
         <h1 className="mb-6 text-center text-2xl font-bold text-gray-900">
           CardCountSelector デモ
         </h1>
-        <CardCountSelector
-          cardCount={cardCount}
-          onIncrement={increment}
-          onDecrement={decrement}
-        />
-        <p className="mt-4 text-center text-sm text-gray-600">
-          現在のカード枚数: {cardCount}
-        </p>
+        <CardCountSelector cardCount={cardCount} onIncrement={increment} onDecrement={decrement} />
+        <p className="mt-4 text-center text-sm text-gray-600">現在のカード枚数: {cardCount}</p>
       </div>
     </div>
   )
