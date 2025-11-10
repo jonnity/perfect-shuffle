@@ -1,0 +1,33 @@
+interface QuickSelectButtonsProps {
+  onSelect: (count: number) => void
+}
+
+/**
+ * クイック選択ボタンコンポーネント
+ *
+ * 特徴:
+ * - 40、60、99 の 3 つのボタンをグリッドレイアウトで表示
+ * - 各ボタンは最小 44px のタッチターゲット
+ * - 選択された枚数で onSelect prop を呼び出す
+ *
+ * @param onSelect - 枚数が選択されたときのコールバック
+ */
+export function QuickSelectButtons({ onSelect }: QuickSelectButtonsProps) {
+  const quickSelectOptions = [40, 60, 99]
+
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {quickSelectOptions.map((count) => (
+        <button
+          key={count}
+          type="button"
+          onClick={() => onSelect(count)}
+          className="flex h-14 w-full items-center justify-center rounded-lg bg-blue-500 text-xl font-bold text-white hover:bg-blue-600 active:bg-blue-700"
+          aria-label={`${count}枚を選択`}
+        >
+          {count}
+        </button>
+      ))}
+    </div>
+  )
+}
