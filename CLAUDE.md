@@ -1,6 +1,8 @@
-# Claude Code Guidelines for Perfect Shuffle
+# Claude Code ガイドライン for Perfect Shuffle
 
-This document provides guidelines for Claude Code when working on the Perfect Shuffle project.
+このドキュメントは、Perfect Shuffle プロジェクトで作業する際の Claude Code 向けのガイドラインです。
+
+**重要: ユーザーとのコミュニケーションは日本語で行ってください。**
 
 ## Project Specifications
 
