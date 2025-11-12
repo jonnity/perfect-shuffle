@@ -10,7 +10,9 @@
       "Bash(gh pr create:*)",
       "Bash(npm run lint:*)",
       "Bash(npm run test:*)",
-      "mcp__serena__list_dir"
+      "mcp__serena__list_dir",
+      "Bash(gh repo view:*)",
+      "Bash(npm test:*)"
     ],
     "deny": [],
     "ask": []
