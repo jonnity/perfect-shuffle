@@ -35,27 +35,29 @@ describe("useShuffle", () => {
       expect(result.current.currentCardPosition).toBeLessThanOrEqual(5)
     })
 
-    it("remainingCards が shuffleOrder と同じ内容で初期化される", () => {
+    it("remainingCards が元の順序 [1,2,3,...,n] で初期化される", () => {
       const { result } = renderHook(() => useShuffle(3))
 
-      // remainingCards の各要素は 1〜3 の範囲内
-      expect(result.current.remainingCards.every((card) => card >= 1 && card <= 3)).toBe(true)
+      // remainingCards は [1, 2, 3] の順序で初期化される
+      expect(result.current.remainingCards).toEqual([1, 2, 3])
     })
   })
 
   describe("nextCard", () => {
-    it("nextCard を呼ぶと remainingCards から先頭要素が削除される（次のカードに進む）", () => {
+    it("nextCard を呼ぶと remainingCards から次に置くべきカードが削除される（次のカードに進む）", () => {
       const { result } = renderHook(() => useShuffle(5))
 
       const initialLength = result.current.remainingCards.length
-      const firstCard = result.current.remainingCards[0]
+      const initialPosition = result.current.currentCardPosition
+      // currentCardPosition の位置にあるカードが削除される
+      const cardToRemove = result.current.remainingCards[initialPosition - 1]
 
       act(() => {
         result.current.nextCard()
       })
 
       expect(result.current.remainingCards).toHaveLength(initialLength - 1)
-      expect(result.current.remainingCards).not.toContain(firstCard)
+      expect(result.current.remainingCards).not.toContain(cardToRemove)
     })
 
     it("nextCard を複数回呼ぶと remainingCards が順次減少する", () => {
