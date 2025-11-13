@@ -1,6 +1,5 @@
 interface ShuffleDisplayProps {
   cardPosition: number
-  onClick: () => void
 }
 
 /**
@@ -10,19 +9,13 @@ interface ShuffleDisplayProps {
  * - カード位置を非常に大きく中央に表示（text-7xl font-extrabold）
  * - 「上から○枚目を置いて」形式で表示
  * - 「タップで次へ」メッセージを下に表示（text-base）
- * - 表示エリア全体をクリック可能にする
+ * - クリック処理は親コンポーネントで行う
  *
  * @param cardPosition - 表示するカード位置（現在の手札での位置）
- * @param onClick - タップ/クリックハンドラ
  */
-export function ShuffleDisplay({ cardPosition, onClick }: ShuffleDisplayProps) {
+export function ShuffleDisplay({ cardPosition }: ShuffleDisplayProps) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="flex w-full flex-col items-center justify-center gap-8 py-16"
-      aria-label={`上から${cardPosition}枚目を置いて、次へ`}
-    >
+    <div className="flex w-full flex-col items-center justify-center gap-8 py-16">
       {/* Card position display */}
       <div className="text-center">
         <div className="text-base text-gray-600">上から</div>
@@ -32,6 +25,6 @@ export function ShuffleDisplay({ cardPosition, onClick }: ShuffleDisplayProps) {
 
       {/* Tap instruction */}
       <div className="text-base text-gray-500">タップで次へ</div>
-    </button>
+    </div>
   )
 }

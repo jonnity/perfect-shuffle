@@ -41,6 +41,16 @@ export function ShufflePage() {
     navigate("/")
   }
 
+  /**
+   * キーボードイベントハンドラ（Enter または Space で次へ）
+   */
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      handleNext()
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-blue-100">
       {/* ヘッダー: 進捗表示と中断ボタン */}
@@ -57,12 +67,18 @@ export function ShufflePage() {
         </div>
       </header>
 
-      {/* メインコンテンツ: ShuffleDisplay */}
-      <main className="flex flex-1 items-center justify-center px-4">
+      {/* メインコンテンツ: ShuffleDisplay - 画面全体がタップ可能 */}
+      <button
+        type="button"
+        onClick={handleNext}
+        onKeyDown={handleKeyDown}
+        className="flex flex-1 cursor-pointer items-center justify-center px-4"
+        aria-label="次のカードに進む"
+      >
         <div className="w-full max-w-md">
-          <ShuffleDisplay cardPosition={currentCardPosition} onClick={handleNext} />
+          <ShuffleDisplay cardPosition={currentCardPosition} />
         </div>
-      </main>
+      </button>
     </div>
   )
 }
