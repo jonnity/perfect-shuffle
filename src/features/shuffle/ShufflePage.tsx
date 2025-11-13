@@ -1,3 +1,5 @@
+import { useLocalStorage } from "@/shared/hooks/useLocalStorage"
+import { DEFAULT_CARD_COUNT } from "@/types"
 import { useNavigate } from "react-router-dom"
 import { ProgressIndicator } from "./components/ProgressIndicator"
 import { ShuffleDisplay } from "./components/ShuffleDisplay"
@@ -13,8 +15,8 @@ import { useShuffle } from "./hooks/useShuffle"
 export function ShufflePage() {
   const navigate = useNavigate()
 
-  // TODO: カード枚数を LocalStorage から取得する（暫定的に10枚）
-  const totalCards = 10
+  // LocalStorage からカード枚数を取得
+  const [totalCards] = useLocalStorage<number>("cardCount", DEFAULT_CARD_COUNT)
 
   const { currentCardPosition, remainingCards, progress, nextCard } = useShuffle(totalCards)
 
