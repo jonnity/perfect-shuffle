@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { ProgressIndicator } from "./components/ProgressIndicator"
 import { ShuffleDisplay } from "./components/ShuffleDisplay"
 import { useShuffle } from "./hooks/useShuffle"
 
@@ -43,9 +44,7 @@ export function ShufflePage() {
       {/* ヘッダー: 進捗表示と中断ボタン */}
       <header className="flex items-center justify-center p-4">
         <div className="flex w-full max-w-md items-center justify-between">
-          <div className="text-sm text-gray-600">
-            {progress.current} / {progress.total}
-          </div>
+          <ProgressIndicator current={progress.current} total={progress.total} />
           <button
             type="button"
             onClick={handleBack}
