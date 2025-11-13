@@ -13,22 +13,28 @@ export function useShuffle(totalCards: number) {
   // シャッフル順序を生成（初回のみ実行）
   const shuffleOrder = useMemo(() => fisherYatesShuffle(totalCards), [totalCards])
 
+  // 元の順序のカード配列を生成（初回のみ実行）
+  const initialCards = useMemo(
+    () => Array.from({ length: totalCards }, (_, i) => i + 1),
+    [totalCards],
+  )
+
   // 残りのカード配列（まだめくっていないカード）
-  const [remainingCards, setRemainingCards] = useState<number[]>(shuffleOrder)
+  const [remainingCards, setRemainingCards] = useState<number[]>(initialCards)
 
   // 現在のカードインデックス（0-indexed）
-  const currentIndex = shuffleOrder.length - remainingCards.length
+  const currentIndex = totalCards - remainingCards.length
 
   // 現在のカード位置（1-indexed）
-  // remainingCards の先頭要素が「現在めくろうとしているカード」
-  // その位置 = remainingCards[0] が shuffleOrder の何番目にあるか + 1
+  // shuffleOrder[currentIndex] が「次に置くべきカード」
+  // そのカードが remainingCards の何番目にあるか + 1
   const currentCardPosition = useMemo(() => {
     if (remainingCards.length === 0) {
       return 0 // 全カードめくり終わった場合
     }
-    const currentCard = remainingCards[0]
-    return shuffleOrder.indexOf(currentCard) + 1
-  }, [remainingCards, shuffleOrder])
+    const nextCard = shuffleOrder[currentIndex]
+    return remainingCards.indexOf(nextCard) + 1
+  }, [remainingCards, shuffleOrder, currentIndex])
 
   // 進捗情報
   const progress = {
@@ -38,24 +44,31 @@ export function useShuffle(totalCards: number) {
 
   /**
    * 次のカードに進む
-   * remainingCards から先頭要素を削除する
+   * remainingCards から次に置くべきカードを削除する
    */
   const nextCard = useCallback(() => {
     setRemainingCards((prev) => {
       if (prev.length === 0) {
         return prev // すでに全てめくり終わっている場合は何もしない
       }
-      return prev.slice(1) // 先頭要素を削除
+      const currentIdx = totalCards - prev.length
+      const nextCardToRemove = shuffleOrder[currentIdx]
+      const indexToRemove = prev.indexOf(nextCardToRemove)
+      if (indexToRemove === -1) {
+        return prev // カードが見つからない場合は何もしない
+      }
+      // 指定位置の要素を削除
+      return [...prev.slice(0, indexToRemove), ...prev.slice(indexToRemove + 1)]
     })
-  }, [])
+  }, [shuffleOrder, totalCards])
 
   /**
    * シャッフルをリセット
    * remainingCards を初期状態に戻す
    */
   const reset = useCallback(() => {
-    setRemainingCards(shuffleOrder)
-  }, [shuffleOrder])
+    setRemainingCards(initialCards)
+  }, [initialCards])
 
   return {
     /** 現在のカード位置（1-indexed、シャッフル順序内での位置） */
