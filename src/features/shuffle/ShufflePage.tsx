@@ -52,15 +52,21 @@ export function ShufflePage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-blue-100">
-      {/* ヘッダー: 進捗表示と中断ボタン */}
-      <header className="flex items-center justify-center p-4">
+    <button
+      type="button"
+      onClick={handleNext}
+      onKeyDown={handleKeyDown}
+      className="flex min-h-screen w-full cursor-pointer flex-col bg-gradient-to-b from-blue-50 to-blue-100"
+      aria-label="次のカードに進む"
+    >
+      {/* ヘッダー: 進捗表示と中断ボタン - pointer-events-none で透過 */}
+      <header className="pointer-events-none flex items-center justify-center p-4">
         <div className="flex w-full max-w-md items-center justify-between">
           <ProgressIndicator current={progress.current} total={progress.total} />
           <button
             type="button"
             onClick={handleBack}
-            className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
+            className="pointer-events-auto rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
           >
             中断
           </button>
@@ -68,17 +74,11 @@ export function ShufflePage() {
       </header>
 
       {/* メインコンテンツ: ShuffleDisplay - 画面全体がタップ可能 */}
-      <button
-        type="button"
-        onClick={handleNext}
-        onKeyDown={handleKeyDown}
-        className="flex flex-1 cursor-pointer items-center justify-center px-4"
-        aria-label="次のカードに進む"
-      >
+      <div className="flex flex-1 items-center justify-center px-4">
         <div className="w-full max-w-md">
           <ShuffleDisplay cardPosition={currentCardPosition} />
         </div>
-      </button>
-    </div>
+      </div>
+    </button>
   )
 }
