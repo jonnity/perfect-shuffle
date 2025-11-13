@@ -41,17 +41,19 @@ export function ShufflePage() {
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-blue-100">
       {/* ヘッダー: 進捗表示と中断ボタン */}
-      <header className="flex items-center justify-between p-4">
-        <div className="text-sm text-gray-600">
-          {progress.current} / {progress.total}
+      <header className="flex items-center justify-center p-4">
+        <div className="flex w-full max-w-md items-center justify-between">
+          <div className="text-sm text-gray-600">
+            {progress.current} / {progress.total}
+          </div>
+          <button
+            type="button"
+            onClick={handleBack}
+            className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
+          >
+            中断
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={handleBack}
-          className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
-        >
-          中断
-        </button>
       </header>
 
       {/* メインコンテンツ: ShuffleDisplay */}
