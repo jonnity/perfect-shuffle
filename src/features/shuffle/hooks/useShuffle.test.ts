@@ -44,7 +44,7 @@ describe("useShuffle", () => {
   })
 
   describe("nextCard", () => {
-    it("nextCard を呼ぶと remainingCards から先頭要素が削除される", () => {
+    it("nextCard を呼ぶと remainingCards から先頭要素が削除される（次のカードに進む）", () => {
       const { result } = renderHook(() => useShuffle(5))
 
       const initialLength = result.current.remainingCards.length
@@ -77,7 +77,7 @@ describe("useShuffle", () => {
       expect(result.current.remainingCards).toHaveLength(2)
     })
 
-    it("全てのカードを引き終わった後は remainingCards が空配列になる", () => {
+    it("全てのカードをめくり終わった後は remainingCards が空配列になる", () => {
       const { result } = renderHook(() => useShuffle(3))
 
       act(() => {
@@ -90,7 +90,7 @@ describe("useShuffle", () => {
       expect(result.current.currentCardPosition).toBe(0)
     })
 
-    it("全てのカードを引き終わった後に nextCard を呼んでも何も起きない", () => {
+    it("全てのカードをめくり終わった後に nextCard を呼んでも何も起きない", () => {
       const { result } = renderHook(() => useShuffle(2))
 
       act(() => {
@@ -138,7 +138,7 @@ describe("useShuffle", () => {
       expect(result.current.progress.total).toBe(10)
     })
 
-    it("全てのカードを引き終わると progress.current === progress.total になる", () => {
+    it("全てのカードをめくり終わると progress.current === progress.total になる", () => {
       const { result } = renderHook(() => useShuffle(3))
 
       act(() => {
@@ -180,7 +180,7 @@ describe("useShuffle", () => {
       expect(secondPosition).not.toBe(firstPosition)
     })
 
-    it("全てのカードを引き終わると currentCardPosition は 0 になる", () => {
+    it("全てのカードをめくり終わると currentCardPosition は 0 になる", () => {
       const { result } = renderHook(() => useShuffle(2))
 
       act(() => {
@@ -231,7 +231,7 @@ describe("useShuffle", () => {
       expect(result.current.progress.current).toBe(0)
     })
 
-    it("全てのカードを引き終わった後に reset を呼ぶと初期状態に戻る", () => {
+    it("全てのカードをめくり終わった後に reset を呼ぶと初期状態に戻る", () => {
       const { result } = renderHook(() => useShuffle(3))
 
       act(() => {
