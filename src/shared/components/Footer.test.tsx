@@ -21,28 +21,30 @@ describe("Footer", () => {
   })
 
   describe("スタイリング", () => {
-    it("should be fixed at the bottom", () => {
+    it("should be fixed at the bottom with spacing", () => {
       const { container } = render(<Footer />)
 
       const footer = container.firstChild as HTMLElement
       expect(footer.tagName).toBe("FOOTER")
       expect(footer.className).toContain("fixed")
-      expect(footer.className).toContain("bottom-0")
+      expect(footer.className).toContain("bottom-4")
     })
 
-    it("should have gray background and shadow", () => {
+    it("should center content", () => {
       const { container } = render(<Footer />)
 
       const footer = container.firstChild as HTMLElement
-      expect(footer.className).toContain("bg-gray-100")
-      expect(footer.className).toContain("shadow-lg")
+      expect(footer.className).toContain("justify-center")
     })
 
-    it("should have height of 16", () => {
+    it("should have rounded background with shadow", () => {
       const { container } = render(<Footer />)
 
       const footer = container.firstChild as HTMLElement
-      expect(footer.className).toContain("h-16")
+      const innerDiv = footer.firstChild as HTMLElement
+      expect(innerDiv.className).toContain("rounded-lg")
+      expect(innerDiv.className).toContain("bg-gray-100")
+      expect(innerDiv.className).toContain("shadow-md")
     })
 
     it("should display items in vertical column", () => {

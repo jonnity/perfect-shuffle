@@ -2,13 +2,12 @@
  * Footer コンポーネント
  * - 画面下部に固定表示
  * - Privacy Policy リンクと著作権表示を縦に配置
- * - グレー背景でフロート表示
- * - 高さ 16（h-16）
+ * - 角丸の小さい背景で控えめに表示
  */
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-16 bg-gray-100 shadow-lg">
-      <div className="flex h-full flex-col items-center justify-center space-y-1 px-4">
+    <footer className="fixed bottom-4 left-0 right-0 flex justify-center">
+      <div className="flex flex-col items-center space-y-1 rounded-lg bg-gray-100 px-4 py-2 shadow-md">
         {/* Privacy Policy リンク */}
         <a
           href="#"
