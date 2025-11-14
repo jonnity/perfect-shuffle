@@ -1,8 +1,49 @@
 @import "tailwindcss";
 
 @theme {
+  /* カラーパレット設定 (design.md準拠) */
+  /* Primary: blue-600 (ボタン、アクセント) */
   --color-primary: #2563eb;
+
+  /* Background: gray-50 (背景) */
   --color-bg: #f9fafb;
+
+  /* Text: gray-900 (メインテキスト) */
   --color-text: #111827;
+
+  /* Border: gray-300 (ボーダー) */
   --color-border: #d1d5db;
+
+  /* フォントサイズ設定 (design.md準拠) */
+  /* タイトル: text-4xl (36px) */
+  --font-size-4xl: 2.25rem;
+  --line-height-4xl: 2.5rem;
+
+  /* サブタイトル: text-lg (18px) */
+  --font-size-lg: 1.125rem;
+  --line-height-lg: 1.75rem;
+
+  /* カード位置表示: text-6xl (60px) / text-7xl (72px) */
+  --font-size-6xl: 3.75rem;
+  --line-height-6xl: 1;
+  --font-size-7xl: 4.5rem;
+  --line-height-7xl: 1;
+
+  /* 進捗表示: text-2xl (24px) */
+  --font-size-2xl: 1.5rem;
+  --line-height-2xl: 2rem;
+
+  /* 操作ガイド: text-base (16px) */
+  --font-size-base: 1rem;
+  --line-height-base: 1.5rem;
+
+  /* その他のサイズ */
+  --font-size-5xl: 3rem;
+  --line-height-5xl: 1;
+
+  /* モバイルファースト設定 (375px ベース) */
+  /* Tailwind v4 では screens はデフォルトでモバイルファーストです */
+
+  /* タッチターゲット: 最小 44px */
+  --spacing-11: 2.75rem; /* 44px */
 }

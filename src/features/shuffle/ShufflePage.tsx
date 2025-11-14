@@ -52,8 +52,9 @@ export function ShufflePage() {
   }
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={handleNext}
       onKeyDown={handleKeyDown}
       className="flex min-h-screen w-full cursor-pointer flex-col bg-gradient-to-b from-blue-50 to-blue-100"
@@ -65,7 +66,10 @@ export function ShufflePage() {
           <ProgressIndicator current={progress.current} total={progress.total} />
           <button
             type="button"
-            onClick={handleBack}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleBack()
+            }}
             className="pointer-events-auto rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
           >
             中断
@@ -79,6 +83,6 @@ export function ShufflePage() {
           <ShuffleDisplay cardPosition={currentCardPosition} />
         </div>
       </div>
-    </button>
+    </div>
   )
 }
