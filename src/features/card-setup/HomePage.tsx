@@ -26,12 +26,12 @@ export function HomePage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 px-4">
-      <div className="w-full max-w-md space-y-8">
+      <main className="w-full max-w-md space-y-8">
         {/* タイトル */}
-        <div className="text-center">
+        <header className="text-center">
           <h1 className="text-4xl font-bold text-blue-900">Perfect Shuffle</h1>
           <p className="mt-2 text-lg text-gray-700">枚数を指定してスタート！</p>
-        </div>
+        </header>
 
         {/* カード枚数選択セクション */}
         <div className="rounded-lg bg-white p-6 shadow-lg">
@@ -50,11 +50,12 @@ export function HomePage() {
             type="button"
             onClick={handleStart}
             className="mt-8 w-full rounded-lg bg-blue-600 py-4 text-lg font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            aria-label={`${cardCount}枚でシャッフルを開始`}
           >
             スタート
           </button>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

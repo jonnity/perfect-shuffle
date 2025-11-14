@@ -70,7 +70,8 @@ export function ShufflePage() {
               e.stopPropagation()
               handleBack()
             }}
-            className="pointer-events-auto rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
+            className="pointer-events-auto min-h-[44px] rounded-lg bg-gray-200 px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            aria-label="シャッフルを中断してホームに戻る"
           >
             中断
           </button>

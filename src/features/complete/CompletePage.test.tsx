@@ -34,7 +34,9 @@ describe("CompletePage", () => {
         </BrowserRouter>,
       )
 
-      expect(screen.getByRole("button", { name: "ホームに戻る" })).toBeTruthy()
+      expect(
+        screen.getByRole("button", { name: "ホームに戻って新しいシャッフルを開始" }),
+      ).toBeTruthy()
     })
   })
 
@@ -47,7 +49,7 @@ describe("CompletePage", () => {
         </BrowserRouter>,
       )
 
-      const button = screen.getByRole("button", { name: "ホームに戻る" })
+      const button = screen.getByRole("button", { name: "ホームに戻って新しいシャッフルを開始" })
       await user.click(button)
 
       expect(mockNavigate).toHaveBeenCalledWith("/")

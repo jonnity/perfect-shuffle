@@ -15,16 +15,22 @@ interface ShuffleDisplayProps {
  */
 export function ShuffleDisplay({ cardPosition }: ShuffleDisplayProps) {
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-8 py-16">
+    <div
+      className="flex w-full flex-col items-center justify-center gap-8 py-16"
+      role="status"
+      aria-live="polite"
+    >
       {/* Card position display */}
-      <div className="text-center">
+      <div className="text-center" aria-label={`上から${cardPosition}枚目を置いてください`}>
         <div className="text-base text-gray-600">上から</div>
         <div className="text-7xl font-extrabold text-gray-900">{cardPosition}</div>
         <div className="mt-2 text-2xl font-bold text-gray-700">枚目を置いて</div>
       </div>
 
       {/* Tap instruction */}
-      <div className="text-base text-gray-500">タップで次へ</div>
+      <div className="text-base text-gray-500" aria-label="タップまたはEnterキーで次のカードに進む">
+        タップで次へ
+      </div>
     </div>
   )
 }
