@@ -30,11 +30,11 @@ describe("Footer", () => {
       expect(footer.className).toContain("bottom-0")
     })
 
-    it("should have white background and shadow", () => {
+    it("should have gray background and shadow", () => {
       const { container } = render(<Footer />)
 
       const footer = container.firstChild as HTMLElement
-      expect(footer.className).toContain("bg-white")
+      expect(footer.className).toContain("bg-gray-100")
       expect(footer.className).toContain("shadow-lg")
     })
 
@@ -45,12 +45,13 @@ describe("Footer", () => {
       expect(footer.className).toContain("h-16")
     })
 
-    it("should display items with space between", () => {
+    it("should display items in vertical column", () => {
       const { container } = render(<Footer />)
 
       const footer = container.firstChild as HTMLElement
       const innerDiv = footer.firstChild as HTMLElement
-      expect(innerDiv.className).toContain("justify-between")
+      expect(innerDiv.className).toContain("flex-col")
+      expect(innerDiv.className).toContain("items-center")
     })
   })
 
