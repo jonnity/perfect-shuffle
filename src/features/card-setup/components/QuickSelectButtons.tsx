@@ -22,7 +22,7 @@ export function QuickSelectButtons({ onSelect }: QuickSelectButtonsProps) {
           key={count}
           type="button"
           onClick={() => onSelect(count)}
-          className="flex h-14 w-full items-center justify-center rounded-lg bg-blue-500 text-xl font-bold text-white hover:bg-blue-600 active:bg-blue-700"
+          className="btn-secondary h-14 w-full text-xl"
           aria-label={`${count}枚を選択`}
         >
           {count}

@@ -59,10 +59,10 @@ describe("QuickSelectButtons", () => {
       const buttons = screen.getAllByRole("button")
 
       for (const button of buttons) {
-        expect(button.className).toContain("bg-blue-500")
-        expect(button.className).toContain("text-white")
-        expect(button.className).toContain("font-bold")
-        expect(button.className).toContain("rounded-lg")
+        expect(button.className).toContain("btn-secondary")
+        expect(button.className).toContain("h-14")
+        expect(button.className).toContain("w-full")
+        expect(button.className).toContain("text-xl")
       }
     })
   })

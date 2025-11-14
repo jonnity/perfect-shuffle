@@ -1,20 +1,73 @@
 @import "tailwindcss";
 
 @theme {
-  /* カラーパレット設定 (design.md準拠) */
-  /* Primary: blue-600 (ボタン、アクセント) */
-  --color-primary: #2563eb;
+  /* ===================================
+   * カラーパレット設定 (design.md準拠)
+   * =================================== */
 
-  /* Background: gray-50 (背景) */
-  --color-bg: #f9fafb;
+  /* ブランドカラー */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-900: #1e3a8a;
 
-  /* Text: gray-900 (メインテキスト) */
-  --color-text: #111827;
+  /* ニュートラルカラー */
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-900: #111827;
 
-  /* Border: gray-300 (ボーダー) */
-  --color-border: #d1d5db;
+  /* セマンティックカラー */
+  /* Primary: アクションボタン、重要な要素 */
+  --color-primary: var(--color-brand-600);
+  --color-primary-hover: var(--color-brand-700);
+  --color-primary-active: var(--color-brand-700);
 
-  /* フォントサイズ設定 (design.md準拠) */
+  /* Secondary: セカンダリボタン、補助的な要素 */
+  --color-secondary: var(--color-brand-500);
+  --color-secondary-hover: var(--color-brand-600);
+  --color-secondary-active: var(--color-brand-700);
+
+  /* Background: メイン背景 */
+  --color-bg-start: var(--color-brand-50);
+  --color-bg-end: var(--color-brand-100);
+  --color-bg-card: #ffffff;
+
+  /* Text: テキストカラー */
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-700);
+  --color-text-tertiary: var(--color-neutral-600);
+  --color-text-hint: var(--color-neutral-500);
+  --color-text-on-primary: #ffffff;
+  --color-text-brand: var(--color-brand-900);
+
+  /* Link: リンクカラー */
+  --color-link: var(--color-brand-600);
+  --color-link-hover: var(--color-brand-700);
+
+  /* Button Neutral: ニュートラルボタン */
+  --color-btn-neutral: var(--color-neutral-200);
+  --color-btn-neutral-hover: var(--color-neutral-300);
+  --color-btn-neutral-text: var(--color-neutral-700);
+
+  /* Focus Ring */
+  --color-focus-primary: #93c5fd;
+  --color-focus-neutral: var(--color-neutral-400);
+
+  /* Border */
+  --color-border: var(--color-neutral-300);
+
+  /* ===================================
+   * フォントサイズ設定 (design.md準拠)
+   * =================================== */
+
   /* タイトル: text-4xl (36px) */
   --font-size-4xl: 2.25rem;
   --line-height-4xl: 2.5rem;
@@ -33,17 +86,127 @@
   --font-size-2xl: 1.5rem;
   --line-height-2xl: 2rem;
 
+  /* テキストサイズ */
+  --font-size-xl: 1.25rem;
+  --line-height-xl: 1.75rem;
+
   /* 操作ガイド: text-base (16px) */
   --font-size-base: 1rem;
   --line-height-base: 1.5rem;
+
+  /* 小さいテキスト */
+  --font-size-sm: 0.875rem;
+  --line-height-sm: 1.25rem;
+
+  --font-size-xs: 0.75rem;
+  --line-height-xs: 1rem;
 
   /* その他のサイズ */
   --font-size-5xl: 3rem;
   --line-height-5xl: 1;
 
-  /* モバイルファースト設定 (375px ベース) */
-  /* Tailwind v4 では screens はデフォルトでモバイルファーストです */
+  /* ===================================
+   * スペーシング設定
+   * =================================== */
 
   /* タッチターゲット: 最小 44px */
   --spacing-11: 2.75rem; /* 44px */
+  --spacing-14: 3.5rem; /* 56px */
+
+  /* ===================================
+   * その他の設定
+   * =================================== */
+
+  /* シャドウ */
+  --shadow-card: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-footer: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* ボーダー半径 */
+  --radius-button: 0.5rem; /* 8px */
+  --radius-card: 0.5rem; /* 8px */
+}
+
+/* ===================================
+ * コンポーネントクラス
+ * =================================== */
+
+@layer components {
+  /* ボタンベーススタイル */
+  .btn-base {
+    @apply inline-flex items-center justify-center;
+    @apply rounded-lg font-semibold transition-colors;
+    @apply focus:outline-none;
+    min-height: var(--spacing-11);
+  }
+
+  /* プライマリボタン */
+  .btn-primary {
+    @apply btn-base;
+    @apply bg-blue-600 text-white;
+    @apply hover:bg-blue-700;
+    @apply focus:ring-4 focus:ring-blue-300;
+  }
+
+  /* セカンダリボタン */
+  .btn-secondary {
+    @apply btn-base;
+    @apply bg-blue-500 text-white;
+    @apply hover:bg-blue-600 active:bg-blue-700;
+  }
+
+  /* ニュートラルボタン */
+  .btn-neutral {
+    @apply btn-base;
+    @apply bg-gray-200 text-gray-700;
+    @apply hover:bg-gray-300;
+    @apply focus:ring-2 focus:ring-gray-400;
+  }
+
+  /* テキストスタイル */
+  .text-brand-title {
+    @apply text-blue-900 font-bold;
+  }
+
+  .text-primary-content {
+    @apply text-gray-900 font-bold;
+  }
+
+  .text-secondary-content {
+    @apply text-gray-700 font-bold;
+  }
+
+  .text-tertiary-content {
+    @apply text-gray-600;
+  }
+
+  .text-hint {
+    @apply text-gray-500;
+  }
+
+  /* 背景グラデーション */
+  .bg-app-gradient {
+    @apply bg-gradient-to-b from-blue-50 to-blue-100;
+  }
+
+  /* カードスタイル */
+  .card {
+    @apply rounded-lg bg-white shadow-lg;
+  }
+
+  /* リンクスタイル */
+  .link-primary {
+    @apply text-blue-600;
+    @apply hover:text-blue-800 hover:underline;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-300;
+    min-height: var(--spacing-11);
+  }
+
+  /* レイアウト */
+  .page-container {
+    @apply flex min-h-screen flex-col items-center justify-center px-4;
+  }
+
+  .content-wrapper {
+    @apply w-full max-w-md;
+  }
 }

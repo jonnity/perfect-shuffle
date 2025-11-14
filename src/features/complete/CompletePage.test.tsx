@@ -65,10 +65,8 @@ describe("CompletePage", () => {
       )
 
       const mainDiv = container.firstChild as HTMLElement
-      expect(mainDiv.className).toContain("flex")
-      expect(mainDiv.className).toContain("min-h-screen")
-      expect(mainDiv.className).toContain("items-center")
-      expect(mainDiv.className).toContain("justify-center")
+      expect(mainDiv.className).toContain("page-container")
+      expect(mainDiv.className).toContain("bg-app-gradient")
     })
 
     it("should display completion message prominently", () => {

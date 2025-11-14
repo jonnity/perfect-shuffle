@@ -23,20 +23,20 @@ export function CardCountSelector({ cardCount, onIncrement, onDecrement }: CardC
       <button
         type="button"
         onClick={onDecrement}
-        className="flex h-14 w-14 items-center justify-center rounded-lg bg-blue-500 text-2xl font-bold text-white hover:bg-blue-600 active:bg-blue-700"
+        className="btn-secondary h-14 w-14 text-2xl"
         aria-label="カード枚数を減らす"
       >
         -
       </button>
 
       {/* Card count display */}
-      <div className="min-w-32 text-center text-5xl font-bold text-gray-900">{cardCount}</div>
+      <div className="text-primary-content min-w-32 text-center text-5xl">{cardCount}</div>
 
       {/* Increment button */}
       <button
         type="button"
         onClick={onIncrement}
-        className="flex h-14 w-14 items-center justify-center rounded-lg bg-blue-500 text-2xl font-bold text-white hover:bg-blue-600 active:bg-blue-700"
+        className="btn-secondary h-14 w-14 text-2xl"
         aria-label="カード枚数を増やす"
       >
         +
