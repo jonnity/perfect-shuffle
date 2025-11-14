@@ -1,3 +1,5 @@
+import { Button } from "../../../shared/components/Button"
+
 interface QuickSelectButtonsProps {
   onSelect: (count: number) => void
 }
@@ -18,15 +20,15 @@ export function QuickSelectButtons({ onSelect }: QuickSelectButtonsProps) {
   return (
     <div className="grid grid-cols-3 gap-4">
       {quickSelectOptions.map((count) => (
-        <button
+        <Button
           key={count}
-          type="button"
+          variant="secondary"
           onClick={() => onSelect(count)}
-          className="btn-secondary h-14 w-full text-xl"
+          className="h-14 w-full text-xl"
           aria-label={`${count}枚を選択`}
         >
           {count}
-        </button>
+        </Button>
       ))}
     </div>
   )

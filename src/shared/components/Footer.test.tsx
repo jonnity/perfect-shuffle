@@ -62,7 +62,8 @@ describe("Footer", () => {
       render(<Footer />)
 
       const link = screen.getByText("Privacy Policy")
-      expect(link.className).toContain("link-primary")
+      expect(link.className).toContain("text-blue-600")
+      expect(link.className).toContain("focus:ring-2")
       expect(link).toBeTruthy()
     })
   })

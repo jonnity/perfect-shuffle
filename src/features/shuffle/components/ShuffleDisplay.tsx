@@ -22,13 +22,13 @@ export function ShuffleDisplay({ cardPosition }: ShuffleDisplayProps) {
     >
       {/* Card position display */}
       <div className="text-center" aria-label={`上から${cardPosition}枚目を置いてください`}>
-        <div className="text-tertiary-content text-base">上から</div>
-        <div className="text-primary-content text-7xl font-extrabold">{cardPosition}</div>
-        <div className="text-secondary-content mt-2 text-2xl">枚目を置いて</div>
+        <div className="text-base text-gray-600">上から</div>
+        <div className="text-7xl font-extrabold text-gray-900">{cardPosition}</div>
+        <div className="mt-2 text-2xl font-bold text-gray-700">枚目を置いて</div>
       </div>
 
       {/* Tap instruction */}
-      <div className="text-hint text-base" aria-label="タップまたはEnterキーで次のカードに進む">
+      <div className="text-base text-gray-500" aria-label="タップまたはEnterキーで次のカードに進む">
         タップで次へ
       </div>
     </div>

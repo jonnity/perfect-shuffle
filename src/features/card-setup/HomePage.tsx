@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { Button } from "../../shared/components/Button"
 import { CardCountSelector } from "./components/CardCountSelector"
 import { QuickSelectButtons } from "./components/QuickSelectButtons"
 import { useCardCount } from "./hooks/useCardCount"
@@ -25,16 +26,16 @@ export function HomePage() {
   }
 
   return (
-    <div className="page-container bg-app-gradient">
-      <main className="content-wrapper space-y-8">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 px-4">
+      <main className="w-full max-w-md space-y-8">
         {/* タイトル */}
         <header className="text-center">
-          <h1 className="text-brand-title text-4xl">Perfect Shuffle</h1>
-          <p className="text-secondary-content mt-2 text-lg">枚数を指定してスタート！</p>
+          <h1 className="text-4xl font-bold text-blue-900">Perfect Shuffle</h1>
+          <p className="mt-2 text-lg text-gray-700">枚数を指定してスタート！</p>
         </header>
 
         {/* カード枚数選択セクション */}
-        <div className="card p-6">
+        <div className="rounded-lg bg-white p-6 shadow-lg">
           <CardCountSelector
             cardCount={cardCount}
             onIncrement={increment}
@@ -46,14 +47,13 @@ export function HomePage() {
           </div>
 
           {/* スタートボタン */}
-          <button
-            type="button"
+          <Button
             onClick={handleStart}
-            className="btn-primary mt-8 w-full py-4 text-lg"
+            className="mt-8 w-full py-4 text-lg"
             aria-label={`${cardCount}枚でシャッフルを開始`}
           >
             スタート
-          </button>
+          </Button>
         </div>
       </main>
     </div>

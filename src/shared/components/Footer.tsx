@@ -12,14 +12,14 @@ export function Footer() {
         {/* Privacy Policy リンク */}
         <a
           href="#"
-          className="link-primary inline-flex items-center justify-center px-2 text-sm"
+          className="inline-flex min-h-[44px] items-center justify-center px-2 text-sm text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
           aria-label="プライバシーポリシーを表示"
         >
           Privacy Policy
         </a>
 
         {/* 著作権表示 */}
-        <p className="text-tertiary-content text-xs">© jonnity 2025</p>
+        <p className="text-xs text-gray-600">© jonnity 2025</p>
       </div>
     </footer>
   )

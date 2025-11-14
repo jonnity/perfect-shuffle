@@ -1,3 +1,5 @@
+import { Button } from "../../../shared/components/Button"
+
 interface CardCountSelectorProps {
   cardCount: number
   onIncrement: () => void
@@ -20,27 +22,27 @@ export function CardCountSelector({ cardCount, onIncrement, onDecrement }: CardC
   return (
     <div className="flex items-center justify-center gap-4">
       {/* Decrement button */}
-      <button
-        type="button"
+      <Button
+        variant="secondary"
         onClick={onDecrement}
-        className="btn-secondary h-14 w-14 text-2xl"
+        className="h-14 w-14 text-2xl"
         aria-label="カード枚数を減らす"
       >
         -
-      </button>
+      </Button>
 
       {/* Card count display */}
-      <div className="text-primary-content min-w-32 text-center text-5xl">{cardCount}</div>
+      <div className="min-w-32 text-center text-5xl font-bold text-gray-900">{cardCount}</div>
 
       {/* Increment button */}
-      <button
-        type="button"
+      <Button
+        variant="secondary"
         onClick={onIncrement}
-        className="btn-secondary h-14 w-14 text-2xl"
+        className="h-14 w-14 text-2xl"
         aria-label="カード枚数を増やす"
       >
         +
-      </button>
+      </Button>
     </div>
   )
 }

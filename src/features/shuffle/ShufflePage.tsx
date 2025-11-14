@@ -1,6 +1,7 @@
 import { useLocalStorage } from "@/shared/hooks/useLocalStorage"
 import { DEFAULT_CARD_COUNT } from "@/types"
 import { useNavigate } from "react-router-dom"
+import { Button } from "../../shared/components/Button"
 import { ProgressIndicator } from "./components/ProgressIndicator"
 import { ShuffleDisplay } from "./components/ShuffleDisplay"
 import { useShuffle } from "./hooks/useShuffle"
@@ -57,30 +58,30 @@ export function ShufflePage() {
       tabIndex={0}
       onClick={handleNext}
       onKeyDown={handleKeyDown}
-      className="bg-app-gradient flex min-h-screen w-full cursor-pointer flex-col"
+      className="flex min-h-screen w-full cursor-pointer flex-col bg-gradient-to-b from-blue-50 to-blue-100"
       aria-label="次のカードに進む"
     >
       {/* ヘッダー: 進捗表示と中断ボタン - pointer-events-none で透過 */}
       <header className="pointer-events-none flex items-center justify-center p-4">
-        <div className="content-wrapper flex items-center justify-between">
+        <div className="flex w-full max-w-md items-center justify-between">
           <ProgressIndicator current={progress.current} total={progress.total} />
-          <button
-            type="button"
+          <Button
+            variant="neutral"
             onClick={(e) => {
               e.stopPropagation()
               handleBack()
             }}
-            className="btn-neutral pointer-events-auto px-4 py-3 text-sm"
+            className="pointer-events-auto px-4 py-3 text-sm"
             aria-label="シャッフルを中断してホームに戻る"
           >
             中断
-          </button>
+          </Button>
         </div>
       </header>
 
       {/* メインコンテンツ: ShuffleDisplay - 画面全体がタップ可能 */}
       <div className="flex flex-1 items-center justify-center px-4">
-        <div className="content-wrapper">
+        <div className="w-full max-w-md">
           <ShuffleDisplay cardPosition={currentCardPosition} />
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { Button } from "../../shared/components/Button"
 
 /**
  * シャッフル完了ページ
@@ -18,25 +19,24 @@ export function CompletePage() {
   }
 
   return (
-    <div className="page-container bg-app-gradient">
-      <main className="content-wrapper space-y-8 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 px-4">
+      <main className="w-full max-w-md space-y-8 text-center">
         {/* 完了メッセージ */}
         <header>
-          <h1 className="text-brand-title text-5xl font-extrabold">完了！</h1>
-          <p className="text-secondary-content mt-4 text-xl" role="status" aria-live="polite">
+          <h1 className="text-5xl font-extrabold text-blue-900">完了！</h1>
+          <p className="mt-4 text-xl text-gray-700" role="status" aria-live="polite">
             シャッフルが完了しました
           </p>
         </header>
 
         {/* ホームに戻るボタン */}
-        <button
-          type="button"
+        <Button
           onClick={handleBackToHome}
-          className="btn-primary w-full py-4 text-lg"
+          className="w-full py-4 text-lg"
           aria-label="ホームに戻って新しいシャッフルを開始"
         >
           ホームに戻る
-        </button>
+        </Button>
       </main>
     </div>
   )
