@@ -12,7 +12,7 @@ export function Footer() {
         {/* Privacy Policy リンク */}
         <a
           href="#"
-          className="inline-flex min-h-[44px] items-center justify-center px-2 text-sm text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="text-sm text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
           aria-label="プライバシーポリシーを表示"
         >
           Privacy Policy
