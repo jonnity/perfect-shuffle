@@ -24,7 +24,7 @@ describe("useShuffle", () => {
 
       expect(result.current.remainingCards).toHaveLength(5)
       expect(result.current.progress.total).toBe(5)
-      expect(result.current.progress.current).toBe(0)
+      expect(result.current.progress.current).toBe(1)
     })
 
     it("currentCardPosition が正しく計算される", () => {
@@ -114,17 +114,17 @@ describe("useShuffle", () => {
     it("progress.current が nextCard で増加する", () => {
       const { result } = renderHook(() => useShuffle(5))
 
-      expect(result.current.progress.current).toBe(0)
-
-      act(() => {
-        result.current.nextCard()
-      })
       expect(result.current.progress.current).toBe(1)
 
       act(() => {
         result.current.nextCard()
       })
       expect(result.current.progress.current).toBe(2)
+
+      act(() => {
+        result.current.nextCard()
+      })
+      expect(result.current.progress.current).toBe(3)
     })
 
     it("progress.total は常に totalCards と一致する", () => {
@@ -215,7 +215,7 @@ describe("useShuffle", () => {
       expect(result.current.remainingCards).toHaveLength(5)
     })
 
-    it("reset を呼ぶと progress.current が 0 に戻る", () => {
+    it("reset を呼ぶと progress.current が 1 に戻る", () => {
       const { result } = renderHook(() => useShuffle(5))
 
       act(() => {
@@ -224,13 +224,13 @@ describe("useShuffle", () => {
         result.current.nextCard()
       })
 
-      expect(result.current.progress.current).toBe(3)
+      expect(result.current.progress.current).toBe(4)
 
       act(() => {
         result.current.reset()
       })
 
-      expect(result.current.progress.current).toBe(0)
+      expect(result.current.progress.current).toBe(1)
     })
 
     it("全てのカードをめくり終わった後に reset を呼ぶと初期状態に戻る", () => {
@@ -249,7 +249,7 @@ describe("useShuffle", () => {
       })
 
       expect(result.current.remainingCards).toHaveLength(3)
-      expect(result.current.progress.current).toBe(0)
+      expect(result.current.progress.current).toBe(1)
     })
   })
 
@@ -281,7 +281,7 @@ describe("useShuffle", () => {
       })
 
       expect(result.current.remainingCards).toHaveLength(98)
-      expect(result.current.progress.current).toBe(1)
+      expect(result.current.progress.current).toBe(2)
     })
   })
 })

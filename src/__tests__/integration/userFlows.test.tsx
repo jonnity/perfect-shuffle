@@ -3,6 +3,14 @@ import userEvent from "@testing-library/user-event"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import App from "../../App"
 
+// Fisher-Yates シャッフルをモック化して決定的な結果を得る
+vi.mock("@/shared/utils/fisherYatesShuffle", () => ({
+  fisherYatesShuffle: (n: number) => {
+    // テスト用の決定的なシャッフル結果を返す（1, 2, 3, ... の順序）
+    return Array.from({ length: n }, (_, i) => i + 1)
+  },
+}))
+
 /**
  * 統合テスト: 主要なユーザーフロー
  *
@@ -15,20 +23,13 @@ describe("ユーザーフロー統合テスト", () => {
   beforeEach(() => {
     // LocalStorage をクリア
     window.localStorage.clear()
-    // Fisher-Yates シャッフルをモック化して決定的な結果を得る
-    vi.mock("@/shared/utils/fisherYatesShuffle", () => ({
-      fisherYatesShuffle: (n: number) => {
-        // テスト用の決定的なシャッフル結果を返す（1, 2, 3, ... の順序）
-        return { order: Array.from({ length: n }, (_, i) => i + 1) }
-      },
-    }))
+    // URL をホームにリセット
+    window.history.replaceState(null, "", "/")
   })
 
   afterEach(() => {
     // LocalStorage をクリア
     window.localStorage.clear()
-    // モックをリセット
-    vi.clearAllMocks()
   })
 
   describe("フロー1: 完全なシャッフルフロー", () => {
@@ -56,7 +57,9 @@ describe("ユーザーフロー統合テスト", () => {
 
       // 40枚が表示されることを確認
       await waitFor(() => {
-        expect(screen.getByText("40")).toBeTruthy()
+        const cardCountDisplay = screen.getAllByText("40")[0]
+        expect(cardCountDisplay).toBeTruthy()
+        expect(cardCountDisplay.className).toContain("text-5xl")
       })
 
       // スタートボタンをクリック
@@ -101,7 +104,7 @@ describe("ユーザーフロー統合テスト", () => {
       })
 
       // 残りのカードをすべてめくる（40枚目まで）
-      for (let i = 4; i < 40; i++) {
+      for (let i = 4; i <= 40; i++) {
         await user.click(shuffleArea)
       }
 
@@ -125,7 +128,9 @@ describe("ユーザーフロー統合テスト", () => {
       })
 
       // LocalStorage に保存された枚数（40）が表示されることを確認
-      expect(screen.getByText("40")).toBeTruthy()
+      const returnedCardCountDisplay = screen.getAllByText("40")[0]
+      expect(returnedCardCountDisplay).toBeTruthy()
+      expect(returnedCardCountDisplay.className).toContain("text-5xl")
     })
   })
 
@@ -167,6 +172,9 @@ describe("ユーザーフロー統合テスト", () => {
 
       // コンポーネントをアンマウント（リロードをシミュレート）
       unmount()
+
+      // URL をホームにリセット（リロード時にホームから始まる）
+      window.history.replaceState(null, "", "/")
 
       // 再度レンダリング（リロード後）
       render(<App />)
