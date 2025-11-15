@@ -38,7 +38,7 @@ export function useShuffle(totalCards: number) {
 
   // 進捗情報
   const progress = {
-    current: currentIndex,
+    current: Math.min(currentIndex + 1, totalCards), // 1-indexed (ユーザーには「1 / N」から表示)
     total: totalCards,
   }
 
