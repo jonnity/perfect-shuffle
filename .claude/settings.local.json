@@ -17,7 +17,8 @@
       "mcp__serena__list_memories",
       "mcp__serena__get_symbols_overview",
       "mcp__serena__find_symbol",
-      "Bash(npx biome check:*)"
+      "Bash(npx biome check:*)",
+      "mcp__filesystem__list_directory"
     ],
     "deny": [],
     "ask": []
