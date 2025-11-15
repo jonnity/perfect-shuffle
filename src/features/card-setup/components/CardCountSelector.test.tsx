@@ -21,6 +21,7 @@ describe("CardCountSelector", () => {
       expect(countDisplay).toBeTruthy()
       expect(countDisplay.className).toContain("text-5xl")
       expect(countDisplay.className).toContain("font-bold")
+      expect(countDisplay.className).toContain("text-gray-900")
     })
 
     it("should render increment button", () => {

@@ -17,7 +17,7 @@ describe("ProgressIndicator", () => {
       expect(progressDiv.className).toContain("text-2xl")
     })
 
-    it("should render with gray text color", () => {
+    it("should render with tertiary content text color", () => {
       const { container } = render(<ProgressIndicator current={1} total={99} />)
 
       const progressDiv = container.firstChild as HTMLElement

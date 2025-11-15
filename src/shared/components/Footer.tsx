@@ -3,6 +3,7 @@
  * - 画面下部に固定表示
  * - Privacy Policy リンクと著作権表示を縦に配置
  * - 角丸の小さい背景で控えめに表示
+ * - 44px最小タッチターゲットを確保
  */
 export function Footer() {
   return (
@@ -11,7 +12,8 @@ export function Footer() {
         {/* Privacy Policy リンク */}
         <a
           href="#"
-          className="text-xs text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="text-sm text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300"
+          aria-label="プライバシーポリシーを表示"
         >
           Privacy Policy
         </a>

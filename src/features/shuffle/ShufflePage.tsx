@@ -1,6 +1,7 @@
 import { useLocalStorage } from "@/shared/hooks/useLocalStorage"
 import { DEFAULT_CARD_COUNT } from "@/types"
 import { useNavigate } from "react-router-dom"
+import { Button } from "../../shared/components/Button"
 import { ProgressIndicator } from "./components/ProgressIndicator"
 import { ShuffleDisplay } from "./components/ShuffleDisplay"
 import { useShuffle } from "./hooks/useShuffle"
@@ -64,16 +65,17 @@ export function ShufflePage() {
       <header className="pointer-events-none flex items-center justify-center p-4">
         <div className="flex w-full max-w-md items-center justify-between">
           <ProgressIndicator current={progress.current} total={progress.total} />
-          <button
-            type="button"
+          <Button
+            variant="neutral"
             onClick={(e) => {
               e.stopPropagation()
               handleBack()
             }}
-            className="pointer-events-auto rounded-lg bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
+            className="pointer-events-auto px-4 py-3 text-sm"
+            aria-label="シャッフルを中断してホームに戻る"
           >
             中断
-          </button>
+          </Button>
         </div>
       </header>
 

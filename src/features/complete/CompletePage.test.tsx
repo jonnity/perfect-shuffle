@@ -34,7 +34,9 @@ describe("CompletePage", () => {
         </BrowserRouter>,
       )
 
-      expect(screen.getByRole("button", { name: "ホームに戻る" })).toBeTruthy()
+      expect(
+        screen.getByRole("button", { name: "ホームに戻って新しいシャッフルを開始" }),
+      ).toBeTruthy()
     })
   })
 
@@ -47,7 +49,7 @@ describe("CompletePage", () => {
         </BrowserRouter>,
       )
 
-      const button = screen.getByRole("button", { name: "ホームに戻る" })
+      const button = screen.getByRole("button", { name: "ホームに戻って新しいシャッフルを開始" })
       await user.click(button)
 
       expect(mockNavigate).toHaveBeenCalledWith("/")
@@ -65,8 +67,7 @@ describe("CompletePage", () => {
       const mainDiv = container.firstChild as HTMLElement
       expect(mainDiv.className).toContain("flex")
       expect(mainDiv.className).toContain("min-h-screen")
-      expect(mainDiv.className).toContain("items-center")
-      expect(mainDiv.className).toContain("justify-center")
+      expect(mainDiv.className).toContain("bg-gradient-to-b")
     })
 
     it("should display completion message prominently", () => {

@@ -19,7 +19,12 @@ export interface ProgressIndicatorProps {
  */
 export function ProgressIndicator({ current, total }: ProgressIndicatorProps) {
   return (
-    <div className="text-2xl text-gray-600">
+    <div
+      className="text-2xl text-gray-600"
+      role="status"
+      aria-live="polite"
+      aria-label={`進捗: ${current}枚目 / 全${total}枚`}
+    >
       {current} / {total}
     </div>
   )
