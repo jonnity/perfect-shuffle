@@ -70,6 +70,8 @@ export const initializeGA = (): void => {
  * @param title - ページのタイトル
  */
 export const trackPageView = (path: string, title?: string): void => {
+  logDev(`[GA] Page view tracked: ${path}`)
+
   if (!isGAEnabled() || !window.gtag) {
     return
   }
@@ -78,8 +80,6 @@ export const trackPageView = (path: string, title?: string): void => {
     page_path: path,
     page_title: title || document.title,
   })
-
-  logDev(`[GA] Page view tracked: ${path}`)
 }
 
 /**
@@ -88,13 +88,13 @@ export const trackPageView = (path: string, title?: string): void => {
  * @param eventParams - イベントパラメータ
  */
 export const trackEvent = (eventName: string, eventParams?: Record<string, unknown>): void => {
+  logDev(`[GA] Event tracked: ${eventName}`, eventParams)
+
   if (!isGAEnabled() || !window.gtag) {
     return
   }
 
   window.gtag("event", eventName, eventParams)
-
-  logDev(`[GA] Event tracked: ${eventName}`, eventParams)
 }
 
 /**
