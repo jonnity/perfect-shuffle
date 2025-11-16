@@ -29,17 +29,17 @@ function App() {
   return (
     <BrowserRouter>
       <PageViewTracker />
-      <div className="flex h-screen flex-col">
-        <main className="flex-1 overflow-y-auto">
+      <main className="flex h-screen flex-col">
+        <div className="flex-1 overflow-y-auto">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/shuffle" element={<ShufflePage />} />
             <Route path="/complete" element={<CompletePage />} />
           </Routes>
-        </main>
+        </div>
         <Footer />
         <AdBanner />
-      </div>
+      </main>
     </BrowserRouter>
   )
 }
