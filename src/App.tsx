@@ -1,6 +1,7 @@
 import { HomePage } from "@/features/card-setup/HomePage"
 import { CompletePage } from "@/features/complete/CompletePage"
 import { ShufflePage } from "@/features/shuffle/ShufflePage"
+import { AdBanner } from "@/shared/components/AdBanner"
 import { Footer } from "@/shared/components/Footer"
 import { initializeGA, trackPageView } from "@/shared/utils/analytics"
 import { useEffect } from "react"
@@ -34,6 +35,7 @@ function App() {
         <Route path="/complete" element={<CompletePage />} />
       </Routes>
       <Footer />
+      <AdBanner />
     </BrowserRouter>
   )
 }
