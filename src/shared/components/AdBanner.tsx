@@ -4,6 +4,7 @@ import { useEffect } from "react"
  * AdBanner コンポーネント
  * - Google Adsense バナー広告を表示
  * - プロダクション環境でのみ広告を有効化
+ * - 開発環境ではプレースホルダーを表示
  * - レスポンシブ対応
  * - 環境変数から広告ユニットIDを取得
  */
@@ -26,8 +27,23 @@ export function AdBanner() {
     }
   }, [])
 
-  // 開発環境または広告IDが未設定の場合は何も表示しない
-  if (!isProduction || !clientId || !slotId) {
+  // 開発環境の場合はプレースホルダーを表示
+  if (!isProduction) {
+    return (
+      <div className="w-full bg-gray-50 py-4">
+        <div className="mx-auto max-w-screen-lg px-4">
+          <div className="flex min-h-[90px] items-center justify-center rounded border-2 border-dashed border-gray-300 bg-gray-100">
+            <p className="text-sm text-gray-500">
+              広告エリア（開発環境ではプレースホルダーを表示）
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // プロダクション環境で広告IDが未設定の場合は何も表示しない
+  if (!clientId || !slotId) {
     return null
   }
 
