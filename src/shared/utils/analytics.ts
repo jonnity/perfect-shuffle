@@ -12,6 +12,15 @@ declare global {
 }
 
 /**
+ * 開発環境でのみコンソールログを出力
+ */
+const logDev = (...args: unknown[]): void => {
+  if (import.meta.env.DEV) {
+    console.log(...args)
+  }
+}
+
+/**
  * GA4が有効かどうかを判定
  * 開発環境では無効化される
  */
@@ -28,7 +37,7 @@ export const isGAEnabled = (): boolean => {
  */
 export const initializeGA = (): void => {
   if (!isGAEnabled()) {
-    console.log("[GA] Analytics disabled in development mode")
+    logDev("[GA] Analytics disabled in development mode")
     return
   }
 
@@ -52,7 +61,7 @@ export const initializeGA = (): void => {
     send_page_view: false, // 手動でページビューを送信
   })
 
-  console.log("[GA] Analytics initialized")
+  logDev("[GA] Analytics initialized")
 }
 
 /**
@@ -70,7 +79,7 @@ export const trackPageView = (path: string, title?: string): void => {
     page_title: title || document.title,
   })
 
-  console.log(`[GA] Page view tracked: ${path}`)
+  logDev(`[GA] Page view tracked: ${path}`)
 }
 
 /**
@@ -85,7 +94,7 @@ export const trackEvent = (eventName: string, eventParams?: Record<string, unkno
 
   window.gtag("event", eventName, eventParams)
 
-  console.log(`[GA] Event tracked: ${eventName}`, eventParams)
+  logDev(`[GA] Event tracked: ${eventName}`, eventParams)
 }
 
 /**
