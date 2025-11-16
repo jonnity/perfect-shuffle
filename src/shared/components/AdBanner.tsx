@@ -30,7 +30,7 @@ export function AdBanner() {
   // 開発環境の場合はプレースホルダーを表示
   if (!isProduction) {
     return (
-      <div className="w-full bg-gray-50 py-4">
+      <div className="fixed bottom-0 left-0 right-0 w-full bg-gray-50 py-4">
         <div className="mx-auto max-w-screen-lg px-4">
           <div className="flex min-h-[90px] items-center justify-center rounded border-2 border-dashed border-gray-300 bg-gray-100">
             <p className="text-sm text-gray-500">
@@ -48,7 +48,7 @@ export function AdBanner() {
   }
 
   return (
-    <div className="w-full bg-gray-50 py-4">
+    <div className="fixed bottom-0 left-0 right-0 w-full bg-gray-50 py-4">
       <div className="mx-auto max-w-screen-lg px-4">
         {/* Google Adsense バナー広告 */}
         <ins
