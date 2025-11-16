@@ -49,6 +49,10 @@ jobs:
 
       - name: Build
         if: steps.check_version.outputs.is_version_merge == 'true'
+        env:
+          VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID }}
+          VITE_ADSENSE_CLIENT_ID: ${{ secrets.VITE_ADSENSE_CLIENT_ID }}
+          VITE_ADSENSE_SLOT_ID: ${{ secrets.VITE_ADSENSE_SLOT_ID }}
         run: npm run build
 
       - name: Deploy to Cloudflare Workers
@@ -84,7 +88,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Workers)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>"
+                    "text": "*🚀 デプロイが成功しました*\n\n*リポジトリ:* ${{ github.repository }}\n*バージョン:* `${{ steps.check_version.outputs.version }}`\n*環境:* Production (Cloudflare Workers)\n*作成者:* ${{ github.actor }}\n\n<https://github.com/${{ github.repository }}/releases/tag/${{ steps.check_version.outputs.version }}|リリースを見る>\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフローログを見る>"
                   }
                 }
               ]

@@ -1,13 +1,41 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { HomePage } from "@/features/card-setup/HomePage"
+import { CompletePage } from "@/features/complete/CompletePage"
+import { ShufflePage } from "@/features/shuffle/ShufflePage"
+import { AdBanner } from "@/shared/components/AdBanner"
+import { Footer } from "@/shared/components/Footer"
+import { initializeGA, trackPageView } from "@/shared/utils/analytics"
+import { useEffect } from "react"
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
+
+/**
+ * ページ遷移を検知してGA4にページビューを送信するコンポーネント
+ */
+function PageViewTracker() {
+  const location = useLocation()
+
+  useEffect(() => {
+    trackPageView(location.pathname)
+  }, [location])
+
+  return null
+}
 
 function App() {
+  useEffect(() => {
+    // アプリ起動時にGA4を初期化
+    initializeGA()
+  }, [])
+
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
-        <Routes>
-          <Route path="/" element={<div className="p-4">Perfect Shuffle - Coming Soon</div>} />
-        </Routes>
-      </div>
+      <PageViewTracker />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/shuffle" element={<ShufflePage />} />
+        <Route path="/complete" element={<CompletePage />} />
+      </Routes>
+      <Footer />
+      <AdBanner />
     </BrowserRouter>
   )
 }
