@@ -66,7 +66,7 @@ describe("CompletePage", () => {
 
       const mainDiv = container.firstChild as HTMLElement
       expect(mainDiv.className).toContain("flex")
-      expect(mainDiv.className).toContain("min-h-screen")
+      expect(mainDiv.className).toContain("h-full")
       expect(mainDiv.className).toContain("bg-gradient-to-b")
     })
 
