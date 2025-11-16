@@ -5,7 +5,6 @@
 
 declare global {
   interface Window {
-    GA_MEASUREMENT_ID?: string
     // biome-ignore lint/suspicious/noExplicitAny: gtag.js の型定義
     gtag?: (...args: any[]) => void
     dataLayer?: unknown[]
