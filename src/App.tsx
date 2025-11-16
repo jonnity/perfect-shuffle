@@ -29,11 +29,13 @@ function App() {
   return (
     <BrowserRouter>
       <PageViewTracker />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/shuffle" element={<ShufflePage />} />
-        <Route path="/complete" element={<CompletePage />} />
-      </Routes>
+      <div className="pb-32">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/shuffle" element={<ShufflePage />} />
+          <Route path="/complete" element={<CompletePage />} />
+        </Routes>
+      </div>
       <Footer />
       <AdBanner />
     </BrowserRouter>

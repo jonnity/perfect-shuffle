@@ -26,7 +26,7 @@ export function HomePage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 px-4 pb-32">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100 px-4">
       <main className="w-full max-w-md space-y-8">
         {/* タイトル */}
         <header className="text-center">
