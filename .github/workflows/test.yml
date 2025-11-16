@@ -31,6 +31,8 @@ jobs:
         run: npm run test -- --run --passWithNoTests
 
       - name: Build
+        env:
+          VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX' }}
         run: npm run build
 
       - name: Get commit message
