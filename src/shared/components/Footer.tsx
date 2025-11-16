@@ -22,5 +22,5 @@ export function Footer() {
         <p className="text-xs text-gray-600">© jonnity 2025</p>
       </div>
     </footer>
-  );
+  )
 }
