@@ -28,7 +28,7 @@ export const isGAEnabled = (): boolean => {
  */
 export const initializeGA = (): void => {
   if (!isGAEnabled()) {
-    console.log("[GA] Analytics disabled in development mode")
+    console.log("[GA] [DEV] Analytics disabled (development mode)")
     return
   }
 
@@ -60,7 +60,7 @@ export const initializeGA = (): void => {
  */
 export const trackPageView = (path: string, title?: string): void => {
   if (!isGAEnabled() || !window.gtag) {
-    console.log(`[GA] Page view tracked: ${path}`)
+    console.log(`[GA] [DEV] Page view: ${path} (not sent)`)
     return
   }
 
@@ -77,7 +77,7 @@ export const trackPageView = (path: string, title?: string): void => {
  */
 export const trackEvent = (eventName: string, eventParams?: Record<string, unknown>): void => {
   if (!isGAEnabled() || !window.gtag) {
-    console.log(`[GA] Event tracked: ${eventName}`, eventParams)
+    console.log(`[GA] [DEV] Event: ${eventName} (not sent)`, eventParams)
     return
   }
 
