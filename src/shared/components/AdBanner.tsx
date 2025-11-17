@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 /**
  * AdBanner コンポーネント
@@ -12,14 +12,14 @@ export function AdBanner() {
   const clientId = import.meta.env.VITE_ADSENSE_CLIENT_ID
   const slotId = import.meta.env.VITE_ADSENSE_SLOT_ID
   const isProduction = import.meta.env.PROD
+  const adRef = useRef<HTMLModElement>(null)
 
   useEffect(() => {
     // プロダクション環境かつ広告IDが設定されている場合のみ広告を表示
-    if (isProduction && clientId && slotId) {
+    if (isProduction && clientId && slotId && adRef.current) {
       try {
-        // adsbygoogle スクリプトがロード済みかつ、ins要素がDOMに存在する場合のみ push
-        const adElements = document.querySelectorAll(".adsbygoogle")
-        if (window.adsbygoogle && Array.isArray(window.adsbygoogle) && adElements.length > 0) {
+        // adsbygoogle スクリプトがロード済みの場合のみ push
+        if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
           window.adsbygoogle.push({})
         }
       } catch (error) {
@@ -53,6 +53,7 @@ export function AdBanner() {
       <div className="mx-auto max-w-screen-lg px-4">
         {/* Google Adsense バナー広告 */}
         <ins
+          ref={adRef}
           className="adsbygoogle"
           style={{ display: "block" }}
           data-ad-client={clientId}
