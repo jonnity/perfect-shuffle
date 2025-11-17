@@ -16,13 +16,43 @@ export function AdBanner() {
   useEffect(() => {
     // プロダクション環境かつ広告IDが設定されている場合のみ広告を表示
     if (isProduction && clientId && slotId) {
-      try {
-        // adsbygoogle スクリプトがロード済みの場合のみ push
-        if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
-          window.adsbygoogle.push({})
+      let retryCount = 0
+      const maxRetries = 50 // 最大5秒待つ（100ms × 50回）
+      let timeoutId: number | undefined
+
+      const initializeAd = () => {
+        try {
+          // window.adsbygoogleが配列として初期化されているか確認
+          if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
+            window.adsbygoogle.push({})
+            return true
+          }
+          return false
+        } catch (error) {
+          console.error("AdBanner initialization error:", error)
+          return false
         }
-      } catch (error) {
-        console.error("AdBanner initialization error:", error)
+      }
+
+      const checkAndInitialize = () => {
+        const initialized = initializeAd()
+
+        if (!initialized && retryCount < maxRetries) {
+          retryCount++
+          timeoutId = window.setTimeout(checkAndInitialize, 100)
+        } else if (!initialized) {
+          console.warn("AdBanner: AdSense script loading timeout")
+        }
+      }
+
+      // 初回チェック
+      checkAndInitialize()
+
+      // クリーンアップ: タイムアウトをクリア
+      return () => {
+        if (timeoutId !== undefined) {
+          clearTimeout(timeoutId)
+        }
       }
     }
   }, [])
