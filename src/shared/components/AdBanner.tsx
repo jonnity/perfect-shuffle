@@ -25,15 +25,22 @@ export function AdBanner() {
         try {
           // 1. ins要素がDOMに存在することを確認
           if (!adRef.current) {
+            console.debug(
+              `AdBanner: ins element not in DOM yet (retry ${retryCount}/${maxRetries})`,
+            )
             return false
           }
 
           // 2. window.adsbygoogleが配列として初期化されているか確認
           if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
             window.adsbygoogle.push({})
-            console.log("AdBanner: Successfully initialized")
+            console.log(`AdBanner: Successfully initialized (after ${retryCount} retries)`)
             return true
           }
+
+          console.debug(
+            `AdBanner: AdSense script not ready yet (retry ${retryCount}/${maxRetries})`,
+          )
           return false
         } catch (error) {
           console.error("AdBanner initialization error:", error)
