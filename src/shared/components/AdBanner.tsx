@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 /**
  * AdBanner コンポーネント
@@ -12,19 +12,26 @@ export function AdBanner() {
   const clientId = import.meta.env.VITE_ADSENSE_CLIENT_ID
   const slotId = import.meta.env.VITE_ADSENSE_SLOT_ID
   const isProduction = import.meta.env.PROD
+  const adRef = useRef<HTMLModElement>(null)
 
   useEffect(() => {
     // プロダクション環境かつ広告IDが設定されている場合のみ広告を表示
     if (isProduction && clientId && slotId) {
       let retryCount = 0
-      const maxRetries = 50 // 最大5秒待つ（100ms × 50回）
+      const maxRetries = 100 // 最大10秒待つ（100ms × 100回）
       let timeoutId: number | undefined
 
       const initializeAd = () => {
         try {
-          // window.adsbygoogleが配列として初期化されているか確認
+          // 1. ins要素がDOMに存在することを確認
+          if (!adRef.current) {
+            return false
+          }
+
+          // 2. window.adsbygoogleが配列として初期化されているか確認
           if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
             window.adsbygoogle.push({})
+            console.log("AdBanner: Successfully initialized")
             return true
           }
           return false
@@ -41,7 +48,9 @@ export function AdBanner() {
           retryCount++
           timeoutId = window.setTimeout(checkAndInitialize, 100)
         } else if (!initialized) {
-          console.warn("AdBanner: AdSense script loading timeout")
+          console.warn(
+            `AdBanner: Timeout after ${maxRetries * 100}ms. AdSense script or ins element not ready.`,
+          )
         }
       }
 
@@ -82,6 +91,7 @@ export function AdBanner() {
       <div className="mx-auto max-w-screen-lg px-4">
         {/* Google Adsense バナー広告 */}
         <ins
+          ref={adRef}
           className="adsbygoogle"
           style={{ display: "block" }}
           data-ad-client={clientId}
