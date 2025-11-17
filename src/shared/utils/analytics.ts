@@ -59,15 +59,30 @@ export const initializeGA = (): void => {
  * @param title - ページのタイトル
  */
 export const trackPageView = (path: string, title?: string): void => {
-  if (!isGAEnabled() || !window.gtag) {
-    console.log(`[GA] [DEV] Page view: ${path} (not sent)`)
+  if (!isGAEnabled()) {
+    if (import.meta.env.DEV) {
+      console.log(`[GA] [DEV] Page view: ${path} (not sent)`)
+    }
     return
   }
 
-  window.gtag("event", "page_view", {
-    page_path: path,
-    page_title: title || document.title,
-  })
+  // gtag.js がロード中の場合は dataLayer に直接 push
+  if (!window.gtag && window.dataLayer) {
+    window.dataLayer.push({
+      event: "page_view",
+      page_path: path,
+      page_title: title || document.title,
+    })
+    return
+  }
+
+  // gtag.js がロード済みの場合は gtag を使用
+  if (window.gtag) {
+    window.gtag("event", "page_view", {
+      page_path: path,
+      page_title: title || document.title,
+    })
+  }
 }
 
 /**
@@ -76,12 +91,26 @@ export const trackPageView = (path: string, title?: string): void => {
  * @param eventParams - イベントパラメータ
  */
 export const trackEvent = (eventName: string, eventParams?: Record<string, unknown>): void => {
-  if (!isGAEnabled() || !window.gtag) {
-    console.log(`[GA] [DEV] Event: ${eventName} (not sent)`, eventParams)
+  if (!isGAEnabled()) {
+    if (import.meta.env.DEV) {
+      console.log(`[GA] [DEV] Event: ${eventName} (not sent)`, eventParams)
+    }
     return
   }
 
-  window.gtag("event", eventName, eventParams)
+  // gtag.js がロード中の場合は dataLayer に直接 push
+  if (!window.gtag && window.dataLayer) {
+    window.dataLayer.push({
+      event: eventName,
+      ...eventParams,
+    })
+    return
+  }
+
+  // gtag.js がロード済みの場合は gtag を使用
+  if (window.gtag) {
+    window.gtag("event", eventName, eventParams)
+  }
 }
 
 /**
