@@ -17,8 +17,9 @@ export function AdBanner() {
     // プロダクション環境かつ広告IDが設定されている場合のみ広告を表示
     if (isProduction && clientId && slotId) {
       try {
-        // adsbygoogle スクリプトがロード済みの場合のみ push
-        if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
+        // adsbygoogle スクリプトがロード済みかつ、ins要素がDOMに存在する場合のみ push
+        const adElements = document.querySelectorAll(".adsbygoogle")
+        if (window.adsbygoogle && Array.isArray(window.adsbygoogle) && adElements.length > 0) {
           window.adsbygoogle.push({})
         }
       } catch (error) {
