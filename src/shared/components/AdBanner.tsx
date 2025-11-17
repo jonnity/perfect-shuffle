@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 
 /**
  * AdBanner コンポーネント
@@ -14,7 +14,7 @@ export function AdBanner() {
   const isProduction = import.meta.env.PROD
   const adRef = useRef<HTMLModElement>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // プロダクション環境かつ広告IDが設定されている場合のみ広告を表示
     if (isProduction && clientId && slotId && adRef.current) {
       try {
