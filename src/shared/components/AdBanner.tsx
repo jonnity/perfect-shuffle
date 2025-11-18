@@ -25,10 +25,8 @@ export function AdBanner() {
     return (
       <div className="fixed bottom-0 left-0 right-0 w-full py-4">
         <div className="mx-auto max-w-screen-lg px-4">
-          <div className="flex min-h-[90px] items-center justify-center rounded border-2 border-dashed border-gray-300 bg-gray-100">
-            <p className="text-sm text-gray-500">
-              広告エリア（開発環境ではプレースホルダーを表示）
-            </p>
+          <div className="flex min-h-[90px] max-h-[90px] items-center justify-center overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100">
+            <p className="text-sm text-gray-500">広告エリア（開発環境）max-h: 90px</p>
           </div>
         </div>
       </div>
