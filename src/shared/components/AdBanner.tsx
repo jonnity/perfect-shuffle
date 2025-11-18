@@ -29,7 +29,6 @@ export function AdBanner() {
           // 1. ins要素がDOMに存在することを確認
           console.debug("adRef.current: ", adRef.current)
           console.debug("window.adsbygoogle: ", window.adsbygoogle)
-          console.debug("Array.isArray(window.adsbygoogle): ", Array.isArray(window.adsbygoogle))
           if (!adRef.current) {
             console.debug(
               `AdBanner: ins element not in DOM yet (retry ${retryCount}/${maxRetries})`,
@@ -38,7 +37,7 @@ export function AdBanner() {
           }
 
           // 2. window.adsbygoogleが配列として初期化されているか確認
-          if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
+          if (window.adsbygoogle) {
             window.adsbygoogle.push({})
             console.log(`AdBanner: Successfully initialized (after ${retryCount} retries)`)
             return true
