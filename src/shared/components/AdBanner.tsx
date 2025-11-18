@@ -45,7 +45,7 @@ export function AdBanner() {
       <div className="mx-auto max-w-screen-lg px-4">
         {/* Google Adsense バナー広告 */}
         <ins
-          className="adsbygoogle"
+          className="adsbygoogle min-h-[90px]"
           style={{ display: "block" }}
           data-ad-client={clientId}
           data-ad-slot={slotId}
