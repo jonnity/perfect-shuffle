@@ -18,7 +18,8 @@
       "mcp__serena__get_symbols_overview",
       "mcp__serena__find_symbol",
       "Bash(npx biome check:*)",
-      "mcp__filesystem__list_directory"
+      "mcp__filesystem__list_directory",
+      "mcp__serena__replace_symbol_body"
     ],
     "deny": [],
     "ask": []
