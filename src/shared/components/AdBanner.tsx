@@ -15,6 +15,9 @@ export function AdBanner() {
   const adRef = useRef<HTMLModElement>(null)
 
   useEffect(() => {
+    console.debug("isProduction: ", isProduction)
+    console.debug("clientId: ", clientId)
+    console.debug("slotId: ", slotId)
     // プロダクション環境かつ広告IDが設定されている場合のみ広告を表示
     if (isProduction && clientId && slotId) {
       let retryCount = 0
