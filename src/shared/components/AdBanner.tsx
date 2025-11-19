@@ -26,22 +26,24 @@ export function AdBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full p-0 mt-4 max-h-[75px]">
-      {/* 開発環境ではプレースホルダー、本番環境では実際の広告を表示 */}
-      {!isProduction ? (
-        <div className="flex max-h-[90px] min-h-[90px] items-center justify-center overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100">
-          <p className="text-sm text-gray-500">広告エリア（開発環境）</p>
-        </div>
-      ) : (
-        <ins
-          className="adsbygoogle"
-          style={{ display: "block" }}
-          data-ad-client={clientId}
-          data-ad-slot={slotId}
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-      )}
+    <div className="fixed bottom-0 left-0 right-0 flex justify-center p-0 mt-4">
+      <div className="w-full max-w-screen-md">
+        {/* 開発環境ではプレースホルダー、本番環境では実際の広告を表示 */}
+        {!isProduction ? (
+          <div className="flex h-[90px] items-center justify-center overflow-hidden rounded border-2 border-dashed border-gray-300 bg-gray-100">
+            <p className="text-sm text-gray-500">広告エリア（開発環境）</p>
+          </div>
+        ) : (
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block", height: "90px" }}
+            data-ad-client={clientId}
+            data-ad-slot={slotId}
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+        )}
+      </div>
     </div>
   )
 }
