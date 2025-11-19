@@ -33,7 +33,6 @@ export function AdBanner() {
           style={{ display: "block", height: "90px", width: "100%" }}
           data-ad-client={clientId}
           data-ad-slot={slotId}
-          data-ad-format="auto"
           data-full-width-responsive="true"
           {...(!isProduction && { "data-adtest": "on" })}
         />
