@@ -27,7 +27,7 @@ describe("Footer", () => {
       const footer = container.firstChild as HTMLElement
       expect(footer.tagName).toBe("FOOTER")
       expect(footer.className).toContain("fixed")
-      expect(footer.className).toContain("bottom-34")
+      expect(footer.className).toContain("bottom-[106px]")
     })
 
     it("should center content", () => {
