@@ -58,7 +58,7 @@ export function ShufflePage() {
       tabIndex={0}
       onClick={handleNext}
       onKeyDown={handleKeyDown}
-      className="flex h-full min-h-[400px] w-full cursor-pointer flex-col bg-gradient-to-b from-blue-50 to-blue-100"
+      className="flex h-full min-h-[400px] w-full cursor-pointer flex-col"
       aria-label="次のカードに進む"
     >
       {/* ヘッダー: 進捗表示と中断ボタン - pointer-events-none で透過 */}

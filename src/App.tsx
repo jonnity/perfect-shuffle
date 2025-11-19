@@ -29,7 +29,7 @@ function App() {
   return (
     <BrowserRouter>
       <PageViewTracker />
-      <div className="flex h-screen flex-col overflow-auto">
+      <div className="flex h-screen flex-col overflow-auto bg-gradient-to-b from-blue-50 to-blue-100">
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
