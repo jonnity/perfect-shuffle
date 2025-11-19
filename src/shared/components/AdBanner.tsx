@@ -26,7 +26,7 @@ export function AdBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex justify-center p-0">
+    <div className="flex justify-center">
       <div className="w-full max-w-screen-md">
         <ins
           className="adsbygoogle block h-[90px] w-full"

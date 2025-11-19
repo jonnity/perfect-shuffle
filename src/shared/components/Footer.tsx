@@ -1,13 +1,12 @@
 /**
  * Footer コンポーネント
- * - 画面下部に固定表示（広告の上）
  * - Privacy Policy リンクと著作権表示を縦に配置
  * - 角丸の小さい背景で控えめに表示
  * - 44px最小タッチターゲットを確保
  */
 export function Footer() {
   return (
-    <footer className="fixed bottom-[106px] left-0 right-0 flex justify-center">
+    <footer className="flex justify-center py-4">
       <div className="flex flex-col items-center space-y-1 rounded-lg bg-gray-100 px-4 py-2 shadow-md">
         {/* Privacy Policy リンク */}
         <a
