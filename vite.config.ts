@@ -11,11 +11,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
-    host: "0.0.0.0", // WSL/devcontainer環境で外部からアクセス可能にする
-    port: 5173,
-    allowedHosts: ["dev.perfect-shuffle.jonnity.com"],
-  },
   // @ts-expect-error - Vite config types don't include test config, but it works at runtime
   test: {
     environment: "jsdom",
