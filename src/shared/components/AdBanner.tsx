@@ -41,7 +41,7 @@ export function AdBanner() {
           data-ad-format="auto"
           data-full-width-responsive="true"
         />
-    )}
+      )}
     </div>
   )
 }
