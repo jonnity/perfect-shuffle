@@ -30,7 +30,7 @@ export function AdBanner() {
       <div className="w-full max-w-screen-md">
         <ins
           className="adsbygoogle"
-          style={{ display: "block", height: "90px" }}
+          style={{ display: "block", height: "90px", width: "100%" }}
           data-ad-client={clientId}
           data-ad-slot={slotId}
           data-ad-format="auto"
