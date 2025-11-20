@@ -15,7 +15,7 @@ export function AdBanner() {
 
   useEffect(() => {
     // 広告IDが設定されている場合のみ広告を表示
-    if (clientId && slotId && window.adsbygoogle) {
+    if (clientId && slotId && window.adsbygoogle && !window.adsbygoogle.loaded) {
       window.adsbygoogle.push({})
     }
   }, [])
@@ -43,6 +43,6 @@ export function AdBanner() {
 // TypeScript型定義: window.adsbygoogle
 declare global {
   interface Window {
-    adsbygoogle: unknown[]
+    adsbygoogle?: { loaded?: boolean; push: (arg: unknown) => void }
   }
 }
