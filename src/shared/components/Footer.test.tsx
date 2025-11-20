@@ -21,13 +21,12 @@ describe("Footer", () => {
   })
 
   describe("スタイリング", () => {
-    it("should be fixed at the bottom with spacing above ad", () => {
+    it("should have proper spacing and be a footer element", () => {
       const { container } = render(<Footer />)
 
       const footer = container.firstChild as HTMLElement
       expect(footer.tagName).toBe("FOOTER")
-      expect(footer.className).toContain("fixed")
-      expect(footer.className).toContain("bottom-34")
+      expect(footer.className).toContain("py-4")
     })
 
     it("should center content", () => {
