@@ -32,7 +32,6 @@ export function useTripleShuffle(totalCards: number) {
   const pileSize = Math.floor(totalCards / 3)
   const leftPileSize = pileSize + (totalCards % 3 > 0 ? 1 : 0) // 余りがある場合、左に1枚追加
   const centerPileSize = pileSize + (totalCards % 3 > 1 ? 1 : 0) // 余りが2以上の場合、中央に1枚追加
-  const rightPileSize = pileSize
 
   // シャッフル順序を3つの束に分割
   // 下1/3を左、中1/3を前、上1/3を右
