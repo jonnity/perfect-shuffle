@@ -77,22 +77,19 @@ describe("ユーザーフロー統合テスト", () => {
         expect(screen.getByLabelText("次のカードに進む")).toBeTruthy()
       })
 
-      // 進捗表示が表示されることを確認
-      expect(screen.getByText("1 / 40")).toBeTruthy()
+      // 進捗表示が表示されることを確認（3つの束方式では0から開始）
+      expect(screen.getByText("0 / 40")).toBeTruthy()
 
       // 中断ボタンが表示されることを確認
       expect(screen.getByText("中断")).toBeTruthy()
 
-      // 最初のカード位置が表示されることを確認（モックでは1が返る）
-      expect(screen.getByText("1")).toBeTruthy()
+      // 3つの束のカード位置が表示されることを確認
+      expect(screen.getByText("左")).toBeTruthy()
+      expect(screen.getByText("前")).toBeTruthy()
+      expect(screen.getByText("右")).toBeTruthy()
 
-      // カードを数回めくる（3回）
+      // ラウンドを数回進める（2回）
       const shuffleArea = screen.getByLabelText("次のカードに進む")
-      await user.click(shuffleArea)
-      await waitFor(() => {
-        expect(screen.getByText("2 / 40")).toBeTruthy()
-      })
-
       await user.click(shuffleArea)
       await waitFor(() => {
         expect(screen.getByText("3 / 40")).toBeTruthy()
@@ -100,13 +97,30 @@ describe("ユーザーフロー統合テスト", () => {
 
       await user.click(shuffleArea)
       await waitFor(() => {
-        expect(screen.getByText("4 / 40")).toBeTruthy()
+        expect(screen.getByText("6 / 40")).toBeTruthy()
       })
 
-      // 残りのカードをすべてめくる（40枚目まで）
-      for (let i = 4; i <= 40; i++) {
+      // 残りのラウンドをすべて進める（40枚を3枚ずつ配置するので14ラウンド、残り12ラウンド）
+      // 40枚の場合、40/3=13.33なので、14ラウンド必要（左14枚、前13枚、右13枚）
+      for (let i = 2; i < 14; i++) {
         await user.click(shuffleArea)
       }
+
+      // 最後のラウンド後、進捗が40/40になることを確認
+      await waitFor(() => {
+        expect(screen.getByText("40 / 40")).toBeTruthy()
+      })
+
+      // もう一度クリックして束を重ねる指示画面を表示
+      await user.click(shuffleArea)
+
+      // 束を重ねる指示画面が表示されることを確認
+      await waitFor(() => {
+        expect(screen.getByText("3つの束を重ねましょう")).toBeTruthy()
+      })
+
+      // 束を重ねる指示画面をクリックして完了画面へ
+      await user.click(shuffleArea)
 
       // 完了ページに遷移したことを確認
       await waitFor(
@@ -247,16 +261,16 @@ describe("ユーザーフロー統合テスト", () => {
         expect(screen.getByLabelText("次のカードに進む")).toBeTruthy()
       })
 
-      // 進捗表示が表示されることを確認
-      expect(screen.getByText("1 / 40")).toBeTruthy()
+      // 進捗表示が表示されることを確認（3つの束方式では0から開始）
+      expect(screen.getByText("0 / 40")).toBeTruthy()
 
-      // カードを数回めくる（5回）
+      // ラウンドを数回進める（2回）
       const shuffleArea = screen.getByLabelText("次のカードに進む")
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 2; i++) {
         await user.click(shuffleArea)
       }
 
-      // 進捗が進んでいることを確認
+      // 進捗が進んでいることを確認（2ラウンドで6枚配置）
       await waitFor(() => {
         expect(screen.getByText("6 / 40")).toBeTruthy()
       })
@@ -349,11 +363,27 @@ describe("ユーザーフロー統合テスト", () => {
         expect(screen.getByLabelText("次のカードに進む")).toBeTruthy()
       })
 
-      // 進捗表示が表示されることを確認
-      expect(screen.getByText("1 / 1")).toBeTruthy()
+      // 進捗表示が表示されることを確認（3つの束方式では0から開始）
+      expect(screen.getByText("0 / 1")).toBeTruthy()
 
-      // 1回クリックして完了
+      // 1回クリックして1枚配置（1枚の場合は左の束のみ）
       const shuffleArea = screen.getByLabelText("次のカードに進む")
+      await user.click(shuffleArea)
+
+      // 進捗が1/1になることを確認
+      await waitFor(() => {
+        expect(screen.getByText("1 / 1")).toBeTruthy()
+      })
+
+      // もう一度クリックして束を重ねる指示画面を表示
+      await user.click(shuffleArea)
+
+      // 束を重ねる指示画面が表示されることを確認
+      await waitFor(() => {
+        expect(screen.getByText("3つの束を重ねましょう")).toBeTruthy()
+      })
+
+      // 束を重ねる指示画面をクリックして完了画面へ
       await user.click(shuffleArea)
 
       // 完了ページに遷移したことを確認
@@ -380,22 +410,22 @@ describe("ユーザーフロー統合テスト", () => {
         expect(screen.getByLabelText("次のカードに進む")).toBeTruthy()
       })
 
-      // Enter キーで次に進む
+      // Enter キーで次に進む（3つの束方式では1回で3枚進む）
       const shuffleArea = screen.getByLabelText("次のカードに進む")
       shuffleArea.focus()
       await user.keyboard("{Enter}")
 
-      // 進捗が進んだことを確認
-      await waitFor(() => {
-        expect(screen.getByText("2 / 60")).toBeTruthy()
-      })
-
-      // Space キーで次に進む
-      await user.keyboard(" ")
-
-      // 進捗が進んだことを確認
+      // 進捗が進んだことを確認（3枚配置）
       await waitFor(() => {
         expect(screen.getByText("3 / 60")).toBeTruthy()
+      })
+
+      // Space キーで次に進む（さらに3枚配置）
+      await user.keyboard(" ")
+
+      // 進捗が進んだことを確認（6枚配置）
+      await waitFor(() => {
+        expect(screen.getByText("6 / 60")).toBeTruthy()
       })
     })
   })
