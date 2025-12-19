@@ -1,17 +1,19 @@
 import { useLocalStorage } from "@/shared/hooks/useLocalStorage"
 import { DEFAULT_CARD_COUNT } from "@/types"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "../../shared/components/Button"
 import { ProgressIndicator } from "./components/ProgressIndicator"
-import { ShuffleDisplay } from "./components/ShuffleDisplay"
-import { useShuffle } from "./hooks/useShuffle"
+import { StackingInstruction } from "./components/StackingInstruction"
+import { TripleShuffleDisplay } from "./components/TripleShuffleDisplay"
+import { useTripleShuffle } from "./hooks/useTripleShuffle"
 
 /**
- * シャッフル表示ページ
- * - useShuffle フックでシャッフル順序を管理
- * - ShuffleDisplay コンポーネントで現在のカード位置を表示
- * - タップで次のカードに進む
- * - 全カードめくり終わったら /complete に遷移
+ * シャッフル表示ページ（3つの束版）
+ * - useTripleShuffle フックで3つの束のシャッフル順序を管理
+ * - TripleShuffleDisplay コンポーネントで3つの束の配置指示を表示
+ * - タップで次のラウンドに進む
+ * - 全カード配置完了後、束を重ねる指示を表示してから /complete に遷移
  */
 export function ShufflePage() {
   const navigate = useNavigate()
@@ -19,19 +21,24 @@ export function ShufflePage() {
   // LocalStorage からカード枚数を取得
   const [totalCards] = useLocalStorage<number>("cardCount", DEFAULT_CARD_COUNT)
 
-  const { currentCardPosition, remainingCards, progress, nextCard } = useShuffle(totalCards)
+  const { currentCardPositions, progress, isAllComplete, nextRound } = useTripleShuffle(totalCards)
+
+  // 束を重ねる指示画面を表示中かどうか
+  const [showStackingInstruction, setShowStackingInstruction] = useState(false)
 
   /**
-   * 次のカードに進む
-   * 全カードめくり終わったら /complete に遷移
+   * 次のラウンドに進む、または完了画面に遷移する
    */
   const handleNext = () => {
-    if (remainingCards.length === 1) {
-      // 最後のカード
-      nextCard()
+    if (showStackingInstruction) {
+      // 束を重ねる指示画面からは完了画面へ
       navigate("/complete")
+    } else if (isAllComplete) {
+      // 全カード配置完了したら、束を重ねる指示画面を表示
+      setShowStackingInstruction(true)
     } else {
-      nextCard()
+      // 次のラウンドへ
+      nextRound()
     }
   }
 
@@ -79,10 +86,18 @@ export function ShufflePage() {
         </div>
       </header>
 
-      {/* メインコンテンツ: ShuffleDisplay - 画面全体がタップ可能 */}
+      {/* メインコンテンツ: TripleShuffleDisplay または StackingInstruction */}
       <div className="flex flex-1 items-center justify-center px-4">
         <div className="w-full max-w-md">
-          <ShuffleDisplay cardPosition={currentCardPosition} />
+          {showStackingInstruction ? (
+            <StackingInstruction />
+          ) : (
+            <TripleShuffleDisplay
+              leftPosition={currentCardPositions.left}
+              centerPosition={currentCardPositions.center}
+              rightPosition={currentCardPositions.right}
+            />
+          )}
         </div>
       </div>
     </div>
