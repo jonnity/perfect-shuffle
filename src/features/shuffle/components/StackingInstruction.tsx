@@ -1,7 +1,7 @@
 /**
  * 3つの束を重ねる指示を表示するコンポーネント
  *
- * すべてのカード配置が完了した後、右・前・左の順に重ねる指示を表示する
+ * すべてのカード配置が完了した後、右・真ん中・左の順に重ねる指示を表示する
  */
 export function StackingInstruction() {
   return (
@@ -15,18 +15,13 @@ export function StackingInstruction() {
         <h2 className="text-2xl font-bold text-gray-900">3つの束を重ねましょう</h2>
       </div>
 
-      {/* 重ねる順序の指示 */}
-      <div className="flex w-full max-w-sm flex-col gap-4">
-        <InstructionStep step={1} text="右の束を手に取る" />
-        <InstructionStep step={2} text="前の束を右の束の下に重ねる" />
-        <InstructionStep step={3} text="左の束を一番下に重ねる" />
-      </div>
-
-      {/* 完了説明 */}
-      <div className="text-center text-sm text-gray-600">
-        <p>右の束が一番上に、</p>
-        <p>前の束が真ん中に、</p>
-        <p>左の束が一番下になります</p>
+      {/* 重ねる順序を視覚的に表示 */}
+      <div className="flex flex-col items-center gap-3">
+        <PileBox label="右" position="一番上" />
+        <div className="text-2xl text-gray-400">↓</div>
+        <PileBox label="真ん中" position="真ん中" />
+        <div className="text-2xl text-gray-400">↓</div>
+        <PileBox label="左" position="一番下" />
       </div>
 
       {/* タップ指示 */}
@@ -37,21 +32,19 @@ export function StackingInstruction() {
   )
 }
 
-interface InstructionStepProps {
-  step: number
-  text: string
+interface PileBoxProps {
+  label: string
+  position: string
 }
 
 /**
- * 1つの指示ステップ
+ * 1つの束を表示するボックス
  */
-function InstructionStep({ step, text }: InstructionStepProps) {
+function PileBox({ label, position }: PileBoxProps) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm font-bold text-white">
-        {step}
-      </div>
-      <div className="text-base text-gray-700">{text}</div>
+    <div className="flex w-48 items-center justify-between rounded-lg border-2 border-gray-300 bg-white px-4 py-3 shadow-sm">
+      <div className="text-lg font-bold text-gray-900">{label}の束</div>
+      <div className="text-sm text-gray-500">{position}</div>
     </div>
   )
 }
