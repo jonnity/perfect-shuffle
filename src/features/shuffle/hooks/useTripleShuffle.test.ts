@@ -19,10 +19,10 @@ describe("useTripleShuffle", () => {
   it("初期状態では3つの束のカード位置が正しく計算される", () => {
     const { result } = renderHook(() => useTripleShuffle(9))
 
-    // 9枚のカードを3等分: 左3枚、前3枚、右3枚
+    // 9枚のカードを3等分: 左3枚、真ん中3枚、右3枚
     // シャッフル順序: [1,2,3,4,5,6,7,8,9]
-    // 左の束: [1,2,3]、前の束: [4,5,6]、右の束: [7,8,9]
-    // 初回ラウンド: 左1枚目(1)、前4枚目(4)、右7枚目(7)
+    // 左の束: [1,2,3]、真ん中の束: [4,5,6]、右の束: [7,8,9]
+    // 初回ラウンド: 左1枚目(1)、真ん中4枚目(4)、右7枚目(7)
     expect(result.current.currentCardPositions.left).toBe(1)
     expect(result.current.currentCardPositions.center).toBe(4)
     expect(result.current.currentCardPositions.right).toBe(7)
@@ -42,7 +42,7 @@ describe("useTripleShuffle", () => {
     expect(result.current.remainingCards).toEqual([2, 3, 5, 6, 8, 9])
     expect(result.current.progress).toEqual({ current: 3, total: 9 })
 
-    // 次のラウンド: 左2枚目(2)、前4枚目(5)、右6枚目(8)
+    // 次のラウンド: 左2枚目(2)、真ん中4枚目(5)、右6枚目(8)
     expect(result.current.currentCardPositions.left).toBe(1) // 残りの中で2は1番目
     expect(result.current.currentCardPositions.center).toBe(3) // 残りの中で5は3番目
     expect(result.current.currentCardPositions.right).toBe(5) // 残りの中で8は5番目
@@ -67,13 +67,13 @@ describe("useTripleShuffle", () => {
     expect(result.current.progress).toEqual({ current: 9, total: 9 })
   })
 
-  it("カード数が3で割り切れない場合、余りが左と前の束に振り分けられる", () => {
+  it("カード数が3で割り切れない場合、余りが左と真ん中の束に振り分けられる", () => {
     const { result } = renderHook(() => useTripleShuffle(10))
 
-    // 10枚のカードを3等分: 左4枚、前3枚、右3枚
+    // 10枚のカードを3等分: 左4枚、真ん中3枚、右3枚
     // シャッフル順序: [1,2,3,4,5,6,7,8,9,10]
-    // 左の束: [1,2,3,4]、前の束: [5,6,7]、右の束: [8,9,10]
-    // 初回ラウンド: 左1枚目(1)、前5枚目(5)、右8枚目(8)
+    // 左の束: [1,2,3,4]、真ん中の束: [5,6,7]、右の束: [8,9,10]
+    // 初回ラウンド: 左1枚目(1)、真ん中5枚目(5)、右8枚目(8)
     expect(result.current.currentCardPositions.left).toBe(1)
     expect(result.current.currentCardPositions.center).toBe(5)
     expect(result.current.currentCardPositions.right).toBe(8)

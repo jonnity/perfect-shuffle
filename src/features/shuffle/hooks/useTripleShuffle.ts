@@ -2,11 +2,11 @@ import { fisherYatesShuffle } from "@/shared/utils/fisherYatesShuffle"
 import { useCallback, useMemo, useState } from "react"
 
 /**
- * 3つの束（左・前・右）に分けてシャッフルするカスタムフック
+ * 3つの束（左・真ん中・右）に分けてシャッフルするカスタムフック
  *
  * シャッフル順序を3等分し、各束に対して並行してカード配置を指示する
  * - 下1/3: 左の束
- * - 中1/3: 前の束
+ * - 中1/3: 真ん中の束
  * - 上1/3: 右の束
  *
  * @param totalCards - シャッフルするカードの総数
@@ -34,7 +34,7 @@ export function useTripleShuffle(totalCards: number) {
   const centerPileSize = pileSize + (totalCards % 3 > 1 ? 1 : 0) // 余りが2以上の場合、中央に1枚追加
 
   // シャッフル順序を3つの束に分割
-  // 下1/3を左、中1/3を前、上1/3を右
+  // 下1/3を左、中1/3を真ん中、上1/3を右
   const leftPile = useMemo(() => shuffleOrder.slice(0, leftPileSize), [shuffleOrder, leftPileSize])
   const centerPile = useMemo(
     () => shuffleOrder.slice(leftPileSize, leftPileSize + centerPileSize),
@@ -100,7 +100,7 @@ export function useTripleShuffle(totalCards: number) {
       if (round < leftPile.length) {
         cardsToRemove.push(leftPile[round])
       }
-      // 前の束
+      // 真ん中の束
       if (round < centerPile.length) {
         cardsToRemove.push(centerPile[round])
       }
@@ -123,7 +123,7 @@ export function useTripleShuffle(totalCards: number) {
   }, [initialCards])
 
   return {
-    /** 現在のラウンドで配置すべきカード位置（左・前・右） */
+    /** 現在のラウンドで配置すべきカード位置（左・真ん中・右） */
     currentCardPositions: getCurrentCardPositions(),
     /** 残りのカード配列 */
     remainingCards,

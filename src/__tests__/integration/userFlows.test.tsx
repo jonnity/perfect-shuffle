@@ -85,7 +85,7 @@ describe("ユーザーフロー統合テスト", () => {
 
       // 3つの束のカード位置が表示されることを確認
       expect(screen.getByText("左")).toBeTruthy()
-      expect(screen.getByText("前")).toBeTruthy()
+      expect(screen.getByText("真ん中")).toBeTruthy()
       expect(screen.getByText("右")).toBeTruthy()
 
       // ラウンドを数回進める（2回）
@@ -101,7 +101,7 @@ describe("ユーザーフロー統合テスト", () => {
       })
 
       // 残りのラウンドをすべて進める（40枚を3枚ずつ配置するので14ラウンド、残り12ラウンド）
-      // 40枚の場合、40/3=13.33なので、14ラウンド必要（左14枚、前13枚、右13枚）
+      // 40枚の場合、40/3=13.33なので、14ラウンド必要（左14枚、真ん中13枚、右13枚）
       for (let i = 2; i < 14; i++) {
         await user.click(shuffleArea)
       }

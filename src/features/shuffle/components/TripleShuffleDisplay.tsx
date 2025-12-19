@@ -7,10 +7,10 @@ interface TripleShuffleDisplayProps {
 /**
  * 3つの束を表示するシャッフルコンポーネント
  *
- * 左・前・右の3つの束に対して、それぞれ「上からn枚目を置いて」と指示を表示する
+ * 左・真ん中・右の3つの束に対して、それぞれ「上からn枚目を置いて」と指示を表示する
  *
  * @param leftPosition - 左の束に置くカードの位置（0の場合は配置済み）
- * @param centerPosition - 前の束に置くカードの位置（0の場合は配置済み）
+ * @param centerPosition - 真ん中の束に置くカードの位置（0の場合は配置済み）
  * @param rightPosition - 右の束に置くカードの位置（0の場合は配置済み）
  */
 export function TripleShuffleDisplay({
@@ -29,8 +29,8 @@ export function TripleShuffleDisplay({
         {/* 左の束 */}
         <PileDisplay position={leftPosition} label="左" />
 
-        {/* 前の束 */}
-        <PileDisplay position={centerPosition} label="前" />
+        {/* 真ん中の束 */}
+        <PileDisplay position={centerPosition} label="真ん中" />
 
         {/* 右の束 */}
         <PileDisplay position={rightPosition} label="右" />
